@@ -1,0 +1,53 @@
+.select {
+  &List {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    max-width: 36rem;
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+.user {
+  &Wrapper {
+    background-color: transparent;
+    height: 10rem;
+    perspective: 1000px;
+    cursor: pointer;
+    
+    &.Unactive {
+      cursor: default;
+    }
+  }
+
+  &Inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    border-radius: .75rem;
+    border: 2px solid black;
+
+    &.Active {
+      transform: rotateY(180deg);
+    }
+  }
+
+  &Front, &Back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: grid;
+    place-items: center;
+  }
+
+  &Front {
+  }
+
+  &Back {
+    transform: rotateY(180deg);
+  }
+}

@@ -1,0 +1,33 @@
+.login {
+  &Wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    max-width: 30rem;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  &Error {
+    font-weight: bold;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+
+  &Subtitle {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  &SelectBlock {
+    max-width: 30rem;
+    width: 100%;
+
+    &Button {
+      margin-top: 1.5rem;
+    }
+  }
+}

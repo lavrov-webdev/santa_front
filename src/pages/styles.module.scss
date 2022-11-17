@@ -1,0 +1,9 @@
+.home {
+  &Wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.25rem;
+    margin: 0 auto;
+  }
+}

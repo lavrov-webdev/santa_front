@@ -1,0 +1,40 @@
+.header {
+  &Wrapper {
+    font-weight: bold;
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  &Link {
+    color: inherit;
+    &:hover,
+    &:focus {
+      text-decoration: none;
+      color: inherit;
+    }
+  }
+}
+
+.main {
+  &Wrapper {
+    margin: 0 auto;
+    max-width: 80rem;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+}
+
+.footer {
+  &Wrapper {
+    font-weight: bold;
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+}
