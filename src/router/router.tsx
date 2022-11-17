@@ -2,7 +2,7 @@ import {createBrowserRouter} from "react-router-dom";
 import {Main} from "../layouts";
 import {Home} from "../pages";
 import {CreateRoom, CreateRoomSuccess} from "../pages/createRoom";
-import Login from "../pages/joinRoom/Login";
+import {Login} from "../pages/joinRoom";
 import {SelectReceiver} from "../pages/selectReceiver";
 
 
