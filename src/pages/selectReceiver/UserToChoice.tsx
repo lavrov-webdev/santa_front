@@ -53,7 +53,7 @@ const UserToChoice: FC<UserToChoiceProps> = ({id, name, hasOpenedCard, onSelect}
           {[styles.Active]: isOpen}
         )}>
           <div className={styles.userFront}>Выбери меня!</div>
-          <div className={styles.userBack}>{name} {id}</div>
+          <div className={styles.userBack}>{name}</div>
         </div>
       </div>
       {isChose && <Confetti
