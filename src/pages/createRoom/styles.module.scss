@@ -23,6 +23,19 @@
     }
   }
 
+  &Sum {
+    &Group {
+      margin: 1rem 0;
+      width: 100%;
+    }
+    &Label {
+      text-align: left;
+      margin-bottom: .5rem;
+      display: block;
+      font-weight: 600;
+    }
+  }
+
   &Error {
     width: 100%;
     margin-bottom: 1rem;

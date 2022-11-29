@@ -1,4 +1,5 @@
-export type CreateRoomFormPops = {
-  names: { value: string }[]
+export type CreateRoomFormFields = {
+  names: string[],
+  cost?: number
 }
 
