@@ -8,10 +8,13 @@ import {CreateRoomRes, ResType} from "../../api/types";
 import {setCreatedRoom} from "../../store/roomSlice";
 import styles from './styles.module.scss'
 import {FieldArray, Form, Formik} from "formik";
+import {validateCreateRoomFrom} from "./utils";
+import {FormErrorMessage} from "../../components";
 
 const CreateRoom: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch()
+
   const [{data: reqData, loading}, sendCreateRoom] = useAxios<ResType<CreateRoomRes>>({
     method: "post", url: "room/create"
   }, {manual: true})
@@ -32,7 +35,11 @@ const CreateRoom: FC = () => {
   }
 
   return (
-    <Formik initialValues={{names: [""], cost: undefined}} onSubmit={onSubmit}>
+    <Formik
+      initialValues={{names: [""], cost: undefined}}
+      onSubmit={onSubmit}
+      validate={validateCreateRoomFrom}
+    >
       {formik => (<Form className={styles.form}>
         <div className={styles.title}>Введите список участников:</div>
         <FieldArray name="names">
@@ -48,17 +55,19 @@ const CreateRoom: FC = () => {
             </ul>
             {reqData?.error && <Message className={styles.formError} type='error'>{reqData?.error}</Message>}
             <Button appearance="ghost" onClick={() => arrayHelpers.push("")} block>Добавить участника</Button>
+            <FormErrorMessage className={styles.formError} name="names"/>
           </>)}
         </FieldArray>
         <div className={styles.formSumGroup}>
           <label className={styles.formSumLabel}>
             Введите максимальную сумму подарка:
           </label>
-            <InputNumber
-              name="cost"
-              value={formik.values.cost}
-              onChange={(_, e) => formik.handleChange(e)}
-            />
+          <InputNumber
+            name="cost"
+            value={formik.values.cost}
+            onChange={(_, e) => formik.handleChange(e)}
+          />
+          <FormErrorMessage name="cost" className={styles.formError}/>
         </div>
         <Button
           appearance="primary"
