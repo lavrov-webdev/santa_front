@@ -14,7 +14,7 @@ const CreateRoomSuccess: FC<CreateRoomSuccessProps> = () => {
 
   return (
     <div>
-      <h2>Комната созадана!</h2>
+      <h2>Комната создана!</h2>
       <div className={styles.linkText}>
         Ссылка для подключения к комнате <a target="_blank"
                                             href={createRoomLink(store.roomId!)}>{createRoomLink(store.roomId!)}</a>
