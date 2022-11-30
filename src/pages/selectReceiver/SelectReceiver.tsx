@@ -12,7 +12,7 @@ const SelectReceiver: FC = () => {
   const [hasOpenedCard, setHasOpenedCard] = useState(false)
   const hacOpenedCardLatest = useLatest(hasOpenedCard)
   const protect = () => usersToChoice.length === 0
-  useProtect([protect], [usersToChoice], "/")
+  useProtect([protect], [usersToChoice])
 
   useEffect(() => {
     setTimeout(() => {

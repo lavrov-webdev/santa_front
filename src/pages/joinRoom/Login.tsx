@@ -2,9 +2,9 @@ import React, {FC, useEffect, useMemo} from 'react'
 import {Button, SelectPicker} from 'rsuite'
 import {useNavigate, useParams} from "react-router-dom";
 import useAxios from "axios-hooks";
-import {ResType, TUser} from "../../api/types";
+import {GetRoomInfoRes, LoginRoomRes} from "../../api/types";
 import {useAppDispatch, useAppSelector} from "../../store/store";
-import {setLoggedUser, setUsersToChoice} from "../../store/usersSlice";
+import {selectUser, setLoggedUser, setUsersToChoice} from "../../store/usersSlice";
 import styles from './styles.module.scss'
 import {joinToRoom} from "../../store/roomSlice";
 
@@ -13,10 +13,10 @@ const Login: FC = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const selectedUser = useAppSelector(state => state.users.loggedUser)
-  const [{data, loading, error}, refetch] = useAxios<ResType<{ users_to_login: TUser[], cost?: number }>>(
+  const [{data, loading}, refetch] = useAxios<GetRoomInfoRes>(
     `room/${roomId}`
   )
-  const [_, login] = useAxios<ResType<{ users_to_select: TUser[] }>>({
+  const [_, login] = useAxios<LoginRoomRes>({
     url: 'room/login',
     method: "post",
     data: {
@@ -50,7 +50,11 @@ const Login: FC = () => {
   const onLogin = async () => {
     const {data} = await login()
     if (!data.error) {
-      dispatch(setUsersToChoice(data.data.users_to_select))
+      if (data.data.selected_user) {
+        dispatch(selectUser(data.data.selected_user))
+      } else {
+        dispatch(setUsersToChoice(data.data.users_to_select))
+      }
       navigate('/select')
     }
   }

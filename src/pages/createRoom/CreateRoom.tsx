@@ -4,7 +4,7 @@ import {Button, Input, InputNumber, Message} from 'rsuite';
 import {CreateRoomFormFields} from './types';
 import useAxios from "axios-hooks";
 import {useAppDispatch} from "../../store/store";
-import {CreateRoomRes, ResType} from "../../api/types";
+import {CreateRoomRes} from "../../api/types";
 import {setCreatedRoom} from "../../store/roomSlice";
 import styles from './styles.module.scss'
 import {FieldArray, Form, Formik} from "formik";
@@ -15,7 +15,7 @@ const CreateRoom: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch()
 
-  const [{data: reqData, loading}, sendCreateRoom] = useAxios<ResType<CreateRoomRes>>({
+  const [{data: reqData, loading}, sendCreateRoom] = useAxios<CreateRoomRes>({
     method: "post", url: "room/create"
   }, {manual: true})
 
