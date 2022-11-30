@@ -3,9 +3,10 @@ import {ResType, TUser} from '../../api/types'
 import styles from './styles.module.scss'
 import cn from 'classnames'
 import useAxios from "axios-hooks";
-import {useAppSelector} from "../../store/store";
+import {useAppDispatch, useAppSelector} from "../../store/store";
 import Confetti from "react-confetti";
 import useWindowSize from "react-use/lib/useWindowSize";
+import {selectUser} from "../../store/usersSlice";
 
 type UserToChoiceProps = {
   id: number,
@@ -15,9 +16,11 @@ type UserToChoiceProps = {
 
 const UserToChoice: FC<UserToChoiceProps> = ({id, name, hasOpenedCard, onSelect}) => {
   const [isOpen, setIsOpen] = useState(false)
+  const [isConfettiRunning, setIsConfettiRunning] = useState(false);
+  const dispatch = useAppDispatch();
   const loggedUser = useAppSelector(store => store.users.loggedUser)
+  const selectedUser = useAppSelector(store => store.users.selectedUser)
   const roomId = useAppSelector(state => state.room.roomId)
-  const [isChose, setIsChose] = useState(false);
   const {width, height} = useWindowSize()
   const [_, sendSelectUser] = useAxios<ResType<any>>({
     url: 'room/select',
@@ -28,7 +31,8 @@ const UserToChoice: FC<UserToChoiceProps> = ({id, name, hasOpenedCard, onSelect}
     },
     method: "put"
   }, {manual: true})
-  const selectHander = async () => {
+
+  const selectHandler = async () => {
     onSelect(true)
     setIsOpen(true)
     const {data} = await sendSelectUser()
@@ -36,7 +40,11 @@ const UserToChoice: FC<UserToChoiceProps> = ({id, name, hasOpenedCard, onSelect}
       onSelect(false)
       setIsOpen(false)
     } else {
-      setIsChose(true)
+      setIsConfettiRunning(true)
+      setTimeout(() => {
+        setIsConfettiRunning(false)
+      }, 3000)
+      dispatch(selectUser({id, name}))
     }
   }
   return (
@@ -46,7 +54,7 @@ const UserToChoice: FC<UserToChoiceProps> = ({id, name, hasOpenedCard, onSelect}
           styles.userWrapper,
           {[styles.Unactive]: hasOpenedCard}
         )}
-        onClick={hasOpenedCard ? undefined : selectHander}
+        onClick={hasOpenedCard ? undefined : selectHandler}
       >
         <div className={cn(
           styles.userInner,
@@ -56,11 +64,14 @@ const UserToChoice: FC<UserToChoiceProps> = ({id, name, hasOpenedCard, onSelect}
           <div className={styles.userBack}>{name}</div>
         </div>
       </div>
-      {isChose && <Confetti
-				width={width}
-				height={height}
-				numberOfPieces={500}
-			/>}
+      {
+        !!selectedUser && <Confetti
+					width={width}
+					height={height}
+					numberOfPieces={500}
+					recycle={isConfettiRunning}
+				/>
+      }
     </>
   )
 }

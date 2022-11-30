@@ -3,12 +3,14 @@ import {TUser} from "../api/types";
 
 export type UsersSlice = {
   loggedUser?: number,
-  usersToChoice: TUser[]
+  usersToChoice: TUser[],
+  selectedUser?: TUser
 }
 
 const initialState:UsersSlice = {
   loggedUser: undefined,
-  usersToChoice: []
+  usersToChoice: [],
+  selectedUser: undefined
 }
 
 const usersSlice = createSlice({
@@ -20,10 +22,13 @@ const usersSlice = createSlice({
     },
     setUsersToChoice: (state, action: PayloadAction<TUser[]>) => {
       state.usersToChoice = action.payload
+    },
+    selectUser: (state, action: PayloadAction<TUser>) => {
+      state.selectedUser = action.payload
     }
   }
 })
 
 
-export const {setLoggedUser, setUsersToChoice} = usersSlice.actions
+export const {setLoggedUser, setUsersToChoice, selectUser} = usersSlice.actions
 export const {reducer: usersReducer} = usersSlice

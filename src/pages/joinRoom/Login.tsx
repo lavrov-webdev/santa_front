@@ -6,14 +6,14 @@ import {ResType, TUser} from "../../api/types";
 import {useAppDispatch, useAppSelector} from "../../store/store";
 import {setLoggedUser, setUsersToChoice} from "../../store/usersSlice";
 import styles from './styles.module.scss'
-import {setRoomId} from "../../store/roomSlice";
+import {joinToRoom} from "../../store/roomSlice";
 
 const Login: FC = () => {
   const {roomId} = useParams()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const selectedUser = useAppSelector(state => state.users.loggedUser)
-  const [{data, loading, error}, refetch] = useAxios<ResType<{ users_to_login: TUser[] }>>(
+  const [{data, loading, error}, refetch] = useAxios<ResType<{ users_to_login: TUser[], cost?: number }>>(
     `room/${roomId}`
   )
   const [_, login] = useAxios<ResType<{ users_to_select: TUser[] }>>({
@@ -34,9 +34,18 @@ const Login: FC = () => {
   }
 
   useEffect(() => {
-    dispatch(setRoomId(roomId))
+    if (data?.data) {
+      dispatch(joinToRoom({
+        cost: data.data.cost,
+        roomId: roomId!
+      }))
+    }
+  }, [data])
+
+  useEffect(() => {
     refetch()
   }, [roomId])
+
 
   const onLogin = async () => {
     const {data} = await login()
@@ -60,7 +69,7 @@ const Login: FC = () => {
                   value={selectedUser}
                   data={usersToSelect}
                   block
-                  />
+                />
                 <Button className={styles.loginSelectBlockButton} block onClick={onLogin}>Войти</Button>
               </div>
 

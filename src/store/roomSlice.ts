@@ -2,12 +2,14 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export type RoomSlice = {
   roomId?: string
-  roomPassword?: string
+  roomPassword?: string,
+  cost?: number
 }
 
 const initialState: RoomSlice = {
   roomId: undefined,
-  roomPassword: undefined
+  roomPassword: undefined,
+  cost: undefined
 }
 
 export const roomSlice = createSlice({
@@ -17,11 +19,12 @@ export const roomSlice = createSlice({
     setCreatedRoom: (_, action: PayloadAction<RoomSlice>) => {
       return action.payload
     },
-    setRoomId: (state, action: PayloadAction<string | undefined>) => {
-      state.roomId = action.payload
+    joinToRoom: (state, action: PayloadAction<{roomId: string, cost?: number}>) => {
+      state.roomId = action.payload.roomId
+      state.cost = action.payload.cost
     }
   }
 })
 
-export const {setCreatedRoom, setRoomId} = roomSlice.actions
+export const {setCreatedRoom, joinToRoom} = roomSlice.actions
 export const {reducer: roomReducer} = roomSlice
