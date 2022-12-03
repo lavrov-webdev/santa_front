@@ -1,12 +1,12 @@
 import React, {FC, useState} from 'react'
-import {ResType, TUser} from '../../api/types'
+import {TUser} from '../../api/types'
 import styles from './styles.module.scss'
 import cn from 'classnames'
-import useAxios from "axios-hooks";
 import {useAppDispatch, useAppSelector} from "../../store/store";
 import Confetti from "react-confetti";
 import useWindowSize from "react-use/lib/useWindowSize";
 import {selectUser} from "../../store/usersSlice";
+import {useSelectUser} from "../../api";
 
 type UserToChoiceProps = {
   id: number,
@@ -22,20 +22,19 @@ const UserToChoice: FC<UserToChoiceProps> = ({id, name, hasOpenedCard, onSelect}
   const selectedUser = useAppSelector(store => store.users.selectedUser)
   const roomId = useAppSelector(state => state.room.roomId)
   const {width, height} = useWindowSize()
-  const [_, sendSelectUser] = useAxios<ResType<any>>({
-    url: 'room/select',
-    data: {
-      room_id: roomId,
-      choosing_user_id: loggedUser,
-      selected_user_id: id
-    },
-    method: "put"
-  }, {manual: true})
+  const [_, sendSelectUser] = useSelectUser()
 
   const selectHandler = async () => {
+    if (!selectedUser || !loggedUser || !roomId) return
     onSelect(true)
     setIsOpen(true)
-    const {data} = await sendSelectUser()
+    const {data} = await sendSelectUser({
+      data: {
+        selected_user_id: selectedUser.id,
+        choosing_user_id: loggedUser,
+        room_id: roomId
+      }
+    })
     if (data.error) {
       onSelect(false)
       setIsOpen(false)

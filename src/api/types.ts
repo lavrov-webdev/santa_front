@@ -21,5 +21,13 @@ export type GetRoomInfoRes = ResType<{
 }>
 export type LoginRoomRes = ResType<{
   users_to_select: TUser[],
-  selected_user?: TUser
 }>
+export type LoginRoomReq = {
+  room_id: string,
+  user_id: number
+}
+export type SelectUserReq = {
+  room_id: string,
+  choosing_user_id: number,
+  selected_user_id: number
+}
