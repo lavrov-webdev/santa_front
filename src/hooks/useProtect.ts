@@ -1,15 +1,15 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default (
   reasons: (() => boolean)[],
   deps: any[],
-  pathToRedirect = "/"
+  pathToRedirect = '/'
 ) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   useEffect(() => {
     for (const reason of reasons) {
-      if (reason()) navigate(pathToRedirect);
+      if (reason()) navigate(pathToRedirect)
     }
-  }, deps);
-};
+  }, deps)
+}

@@ -1,24 +1,24 @@
-import { FC } from "react";
-import { Button, Modal } from "rsuite";
-import { useAppSelector } from "../../store/store";
-import { useNavigate } from "react-router-dom";
+import { FC } from 'react'
+import { Button, Modal } from 'rsuite'
+import { useAppSelector } from '../../store/store'
+import { useNavigate } from 'react-router-dom'
 
 type SuccessModalProps = {
-  open: boolean;
-  handleClose: () => void;
-};
+  open: boolean
+  handleClose: () => void
+}
 
 const SuccessModal: FC<SuccessModalProps> = ({ open, handleClose }) => {
-  const selectedUser = useAppSelector((store) => store.users.selectedUser);
-  const roomCost = useAppSelector((store) => store.room.cost);
-  const navigate = useNavigate();
+  const selectedUser = useAppSelector((store) => store.users.selectedUser)
+  const roomCost = useAppSelector((store) => store.room.cost)
+  const navigate = useNavigate()
 
   const closeModal = () => {
-    handleClose();
-    navigate("/");
-  };
+    handleClose()
+    navigate('/')
+  }
 
-  if (!selectedUser) return null;
+  if (!selectedUser) return null
 
   return (
     <Modal open={open} onClose={handleClose}>
@@ -41,7 +41,7 @@ const SuccessModal: FC<SuccessModalProps> = ({ open, handleClose }) => {
         </Button>
       </Modal.Footer>
     </Modal>
-  );
-};
+  )
+}
 
-export default SuccessModal;
+export default SuccessModal

@@ -1,1 +1,1 @@
-export { default as SelectReceiver } from "./SelectReceiver";
+export { default as SelectReceiver } from './SelectReceiver'

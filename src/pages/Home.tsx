@@ -1,8 +1,8 @@
-import { FC } from "react";
-import { LinkButton } from "../components";
-import styles from "./styles.module.scss";
+import { FC } from 'react'
+import { LinkButton } from '../components'
+import styles from './styles.module.scss'
 
-type HomeProps = {};
+type HomeProps = {}
 
 const Home: FC<HomeProps> = () => {
   return (
@@ -11,7 +11,7 @@ const Home: FC<HomeProps> = () => {
         Создать комнату
       </LinkButton>
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

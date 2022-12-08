@@ -1,24 +1,24 @@
-import React, { FC, useEffect, useState } from "react";
-import { useAppSelector } from "../../store/store";
-import { useProtect } from "../../hooks";
-import UserToChoice from "./UserToChoice";
-import styles from "./styles.module.scss";
-import SuccessModal from "./SuccessModal";
-import { useLatest } from "react-use";
+import React, { FC, useEffect, useState } from 'react'
+import { useAppSelector } from '../../store/store'
+import { useProtect } from '../../hooks'
+import UserToChoice from './UserToChoice'
+import styles from './styles.module.scss'
+import SuccessModal from './SuccessModal'
+import { useLatest } from 'react-use'
 
 const SelectReceiver: FC = () => {
-  const usersToChoice = useAppSelector((state) => state.users.usersToChoice);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [hasOpenedCard, setHasOpenedCard] = useState(false);
-  const hacOpenedCardLatest = useLatest(hasOpenedCard);
-  const protect = () => usersToChoice.length === 0;
-  useProtect([protect], [usersToChoice]);
+  const usersToChoice = useAppSelector((state) => state.users.usersToChoice)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [hasOpenedCard, setHasOpenedCard] = useState(false)
+  const hacOpenedCardLatest = useLatest(hasOpenedCard)
+  const protect = () => usersToChoice.length === 0
+  useProtect([protect], [usersToChoice])
 
   useEffect(() => {
     setTimeout(() => {
-      if (hacOpenedCardLatest) setIsModalOpen(true);
-    }, 2000);
-  }, [hasOpenedCard]);
+      if (hacOpenedCardLatest) setIsModalOpen(true)
+    }, 2000)
+  }, [hasOpenedCard])
 
   return (
     <>
@@ -38,7 +38,7 @@ const SelectReceiver: FC = () => {
         handleClose={() => setIsModalOpen(false)}
       />
     </>
-  );
-};
+  )
+}
 
-export default SelectReceiver;
+export default SelectReceiver

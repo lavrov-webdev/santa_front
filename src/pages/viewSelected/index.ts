@@ -1,1 +1,1 @@
-export { default as ViewSelected } from "./ViewSelected";
+export { default as ViewSelected } from './ViewSelected'

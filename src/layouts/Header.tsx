@@ -1,8 +1,8 @@
-import React, { FC } from "react";
-import { Link } from "react-router-dom";
-import styles from "./styles.module.scss";
+import React, { FC } from 'react'
+import { Link } from 'react-router-dom'
+import styles from './styles.module.scss'
 
-type HeaderProps = {};
+type HeaderProps = {}
 
 const Header: FC<HeaderProps> = () => {
   return (
@@ -11,7 +11,7 @@ const Header: FC<HeaderProps> = () => {
         Тайный Санта
       </Link>
     </div>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

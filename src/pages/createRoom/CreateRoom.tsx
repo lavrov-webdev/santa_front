@@ -1,44 +1,44 @@
-import React, { FC } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button, Input, InputNumber, Message } from "rsuite";
-import { CreateRoomFormFields } from "./types";
-import { useAppDispatch } from "../../store/store";
-import { setCreatedRoom } from "../../store/roomSlice";
-import styles from "./styles.module.scss";
-import { FieldArray, Form, Formik } from "formik";
-import { validateCreateRoomFrom } from "./utils";
-import { FormErrorMessage } from "../../components";
-import { useCreateRoom } from "../../api";
+import React, { FC } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Button, Input, InputNumber, Message } from 'rsuite'
+import { CreateRoomFormFields } from './types'
+import { useAppDispatch } from '../../store/store'
+import { setCreatedRoom } from '../../store/roomSlice'
+import styles from './styles.module.scss'
+import { FieldArray, Form, Formik } from 'formik'
+import { validateCreateRoomFrom } from './utils'
+import { FormErrorMessage } from '../../components'
+import { useCreateRoom } from '../../api'
 
 const CreateRoom: FC = () => {
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
-  const [{ data: reqData, loading }, sendCreateRoom] = useCreateRoom();
+  const [{ data: reqData, loading }, sendCreateRoom] = useCreateRoom()
 
   const onSubmit = async (formData: CreateRoomFormFields) => {
     const dataToReq = {
       users: formData.names.map((name) => ({ name })),
       cost: formData.cost,
-    };
+    }
     const { data } = await sendCreateRoom({
       data: dataToReq,
-    });
-    if (!data) return;
+    })
+    if (!data) return
     if (!data?.error) {
       dispatch(
         setCreatedRoom({
           roomId: data.data.room_id,
           roomPassword: data.data.room_root_password,
         })
-      );
-      navigate("success");
+      )
+      navigate('success')
     }
-  };
+  }
 
   return (
     <Formik
-      initialValues={{ names: [""], cost: undefined }}
+      initialValues={{ names: [''], cost: undefined }}
       onSubmit={onSubmit}
       validate={validateCreateRoomFrom}
     >
@@ -76,7 +76,7 @@ const CreateRoom: FC = () => {
                 )}
                 <Button
                   appearance="ghost"
-                  onClick={() => arrayHelpers.push("")}
+                  onClick={() => arrayHelpers.push('')}
                   block
                 >
                   Добавить участника
@@ -108,7 +108,7 @@ const CreateRoom: FC = () => {
         </Form>
       )}
     </Formik>
-  );
-};
+  )
+}
 
-export default CreateRoom;
+export default CreateRoom
