@@ -1,1 +1,1 @@
-export {default as useProtect} from './useProtect'
+export { default as useProtect } from "./useProtect";

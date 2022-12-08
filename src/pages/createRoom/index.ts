@@ -1,2 +1,2 @@
-export { default as CreateRoom } from './CreateRoom'
-export { default as CreateRoomSuccess } from './CreateRoomSuccess'
+export { default as CreateRoom } from "./CreateRoom";
+export { default as CreateRoomSuccess } from "./CreateRoomSuccess";

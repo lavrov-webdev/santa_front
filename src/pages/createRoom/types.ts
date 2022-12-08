@@ -1,5 +1,4 @@
 export type CreateRoomFormFields = {
-  names: string[],
-  cost?: number
-}
-
+  names: string[];
+  cost?: number;
+};

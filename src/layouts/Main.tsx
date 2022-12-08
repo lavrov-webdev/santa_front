@@ -1,12 +1,10 @@
-import React, { FC } from 'react'
-import { Outlet } from 'react-router-dom';
-import Footer from './Footer';
-import Header from './Header';
-import styles from './styles.module.scss'
+import React, { FC } from "react";
+import { Outlet } from "react-router-dom";
+import Footer from "./Footer";
+import Header from "./Header";
+import styles from "./styles.module.scss";
 
-type MainProps = {
-
-}
+type MainProps = {};
 
 const Main: FC<MainProps> = () => {
   return (
@@ -15,7 +13,7 @@ const Main: FC<MainProps> = () => {
       <Outlet />
       <Footer />
     </div>
-  )
-}
+  );
+};
 
 export default Main;
