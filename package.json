@@ -7,7 +7,8 @@
     "dev": "vite",
     "deploy": "yarn build && node server.cjs",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.0",
@@ -35,8 +36,13 @@
     "@types/react-dom": "^18.0.8",
     "@vitejs/plugin-react": "^2.2.0",
     "autoprefixer": "^10.4.13",
+    "husky": "^8.0.2",
+    "lint-staged": "^13.1.0",
     "prettier": "2.8.1",
     "typescript": "^4.6.4",
     "vite": "^3.2.3"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown src/"
   }
 }
