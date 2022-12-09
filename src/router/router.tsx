@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import { Main } from '../layouts'
 import { Home } from '../pages'
 import { CreateRoom, CreateRoomSuccess } from '../pages/createRoom'
+import { EditRoom } from '../pages/editRoom'
 import { Login } from '../pages/joinRoom'
 import { SelectReceiver } from '../pages/selectReceiver'
 import { ViewSelected } from '../pages/viewSelected'
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
       {
         path: 'view-selected',
         element: <ViewSelected />,
+      },
+      {
+        path: 'room/:roomId/edit',
+        element: <EditRoom />,
       },
     ],
   },

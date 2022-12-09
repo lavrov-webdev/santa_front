@@ -1,15 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { TUser } from '../api/types'
 
 export type RoomSlice = {
   roomId?: string
   roomPassword?: string
   cost?: number
+  roomToEdit?: {
+    roomId: string
+    roomPass: string
+    users: TUser[]
+  }
 }
 
 const initialState: RoomSlice = {
   roomId: undefined,
   roomPassword: undefined,
   cost: undefined,
+  roomToEdit: undefined,
 }
 
 export const roomSlice = createSlice({
@@ -26,8 +33,18 @@ export const roomSlice = createSlice({
       state.roomId = action.payload.roomId
       state.cost = action.payload.cost
     },
+    joinRoomToEdit: (
+      state,
+      action: PayloadAction<{
+        roomId: string
+        users: TUser[]
+        roomPass: string
+      }>
+    ) => {
+      state.roomToEdit = { ...action.payload }
+    },
   },
 })
 
-export const { setCreatedRoom, joinToRoom } = roomSlice.actions
+export const { setCreatedRoom, joinToRoom, joinRoomToEdit } = roomSlice.actions
 export const { reducer: roomReducer } = roomSlice

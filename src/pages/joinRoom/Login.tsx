@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo } from 'react'
+import { FC, useEffect, useMemo } from 'react'
 import { Button, Loader, SelectPicker } from 'rsuite'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../store/store'

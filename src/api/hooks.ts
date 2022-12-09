@@ -5,6 +5,8 @@ import {
   GetRoomInfoRes,
   LoginRoomReq,
   LoginRoomRes,
+  LoginToEditReq,
+  LoginToEditRes,
   ResType,
   SelectUserReq,
 } from './types'
@@ -37,6 +39,15 @@ export const useSelectUser = () =>
     {
       url: 'room/select',
       method: 'put',
+    },
+    { manual: true }
+  )
+
+export const useLoginToEdit = (getRoomId: () => string) =>
+  useAxios<LoginToEditRes, LoginToEditReq>(
+    {
+      url: `room/${getRoomId()}/edit`,
+      method: 'post',
     },
     { manual: true }
   )

@@ -31,3 +31,9 @@ export type SelectUserReq = {
   choosing_user_id: number
   selected_user_id: number
 }
+export type LoginToEditReq = {
+  password: string
+}
+export type LoginToEditRes = ResType<{
+  users: TUser[]
+}>
