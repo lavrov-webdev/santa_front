@@ -52,7 +52,7 @@ const EditForm: FC<EditFormProps> = ({ setRequestStatus }) => {
           users_to_add: values.users_to_add.map((u) => ({ name: u.name })),
           users_to_edit: values.users_to_edit,
           password: roomEdit!.roomPassword!,
-          cost: values.cost,
+          cost: values.cost ? +values.cost : undefined,
         },
       })
       if (!res.data.error) {
