@@ -1,6 +1,6 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { Message } from 'rsuite'
-import { createRoomLink } from './utils'
+import { createEditRoomLink, createRoomLink } from './utils'
 import { useAppSelector } from '../../store/store'
 import { useProtect } from '../../hooks'
 import styles from './styles.module.scss'
@@ -16,10 +16,18 @@ const CreateRoomSuccess: FC<CreateRoomSuccessProps> = () => {
     <div>
       <h2>Комната создана!</h2>
       <div className={styles.successLinkText}>
-        Ссылка для подключения к комнате{' '}
-        <a target="_blank" href={createRoomLink(store.roomId!)}>
-          {createRoomLink(store.roomId!)}
-        </a>
+        <div>
+          Ссылка для подключения к комнате{' '}
+          <a target="_blank" href={createRoomLink(store.roomId!)}>
+            {createRoomLink(store.roomId!)}
+          </a>
+        </div>
+        <div>
+          А также ссылка для её редактирования{' '}
+          <a target="_blank" href={createEditRoomLink(store.roomId!)}>
+            {createEditRoomLink(store.roomId!)}
+          </a>
+        </div>
       </div>
       <Message className={styles.successPasswordBlock} type="error">
         <div className={styles.successPasswordBlockText}>
