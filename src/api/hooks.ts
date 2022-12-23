@@ -2,7 +2,9 @@ import useAxios from 'axios-hooks'
 import {
   CreateRoomPostData,
   CreateRoomRes,
+  EditRoomReq,
   GetRoomInfoRes,
+  GetString,
   LoginRoomReq,
   LoginRoomRes,
   LoginToEditReq,
@@ -35,7 +37,7 @@ export const useCreateRoom = () =>
   )
 
 export const useSelectUser = () =>
-  useAxios<ResType<any>, SelectUserReq>(
+  useAxios<ResType<never>, SelectUserReq>(
     {
       url: 'room/select',
       method: 'put',
@@ -43,11 +45,19 @@ export const useSelectUser = () =>
     { manual: true }
   )
 
-export const useLoginToEdit = (getRoomId: () => string) =>
+export const useLoginToEdit = (getRoomId: GetString) =>
   useAxios<LoginToEditRes, LoginToEditReq>(
     {
       url: `room/${getRoomId()}/edit`,
       method: 'post',
+    },
+    { manual: true }
+  )
+export const useEditRoom = (getRoomId: GetString) =>
+  useAxios<ResType<never>, EditRoomReq>(
+    {
+      url: `room/${getRoomId()}/edit`,
+      method: 'put',
     },
     { manual: true }
   )

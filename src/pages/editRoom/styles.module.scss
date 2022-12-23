@@ -6,6 +6,7 @@
   max-width: 30rem;
   width: 100%;
   margin: 0 auto;
+  gap: 2rem;
 }
 .home {
   &Title {
@@ -17,4 +18,14 @@
   &Input {
     margin-bottom: 1rem;
   }
+  &ReqStatus {
+    margin-top: 0.3rem;
+    width: 100%;
+  }
+}
+.editForm {
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+  width: 100%;
 }

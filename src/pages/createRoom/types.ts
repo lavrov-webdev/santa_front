@@ -1,4 +1,6 @@
+import { TUser } from '../../api/types'
+
 export type CreateRoomFormFields = {
-  names: string[]
+  users: Omit<TUser, 'id'>[]
   cost?: number
 }

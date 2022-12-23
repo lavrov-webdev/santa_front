@@ -15,15 +15,17 @@ const CreateRoomSuccess: FC<CreateRoomSuccessProps> = () => {
   return (
     <div>
       <h2>Комната создана!</h2>
-      <div className={styles.linkText}>
+      <div className={styles.successLinkText}>
         Ссылка для подключения к комнате{' '}
         <a target="_blank" href={createRoomLink(store.roomId!)}>
           {createRoomLink(store.roomId!)}
         </a>
       </div>
-      <Message className="text-lg mt-10" type="error">
-        Запомните этот пароль, он понадобится, чтобы редактировать комнату:{' '}
-        <b>{store.roomPassword!}</b>
+      <Message className={styles.successPasswordBlock} type="error">
+        <div className={styles.successPasswordBlockText}>
+          Запомните этот пароль, он понадобится, чтобы редактировать комнату:{' '}
+          <b>{store.roomPassword!}</b>
+        </div>
       </Message>
     </div>
   )

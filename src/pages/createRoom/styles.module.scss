@@ -7,32 +7,10 @@
   width: 100%;
   margin: 0 auto;
 
-  &List {
-    width: 100%;
-  }
-
-  &Item {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    &DeleteButton {
-      margin-left: 0.75rem;
-    }
-  }
-
   &Sum {
     &Group {
       margin: 1rem 0;
       width: 100%;
-    }
-    &Label {
-      text-align: left;
-      margin-bottom: 0.5rem;
-      display: block;
-      font-weight: 600;
     }
   }
 
@@ -42,15 +20,17 @@
   }
 }
 
-.title {
-  font-weight: bold;
-  font-size: 1.5rem;
-  line-height: 2rem;
-}
-
-.linkText {
-  font-size: 1.25rem;
-  line-height: 1.75rem;
-  font-weight: 500;
-  margin-top: 1.25rem;
+.success {
+  &LinkText {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 500;
+    margin-top: 1.25rem;
+  }
+  &PasswordBlock {
+    margin-top: 2rem;
+    &Text {
+      font-size: 1.3rem;
+    }
+  }
 }

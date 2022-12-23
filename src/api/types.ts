@@ -2,10 +2,19 @@ export type ResType<T> = {
   error: null | string
   data: T
 }
+export type GetString = () => string
 export type TUser = {
   id: number
   name: string
 }
+export type TBaseRoom = {
+  roomId?: string
+  roomPassword?: string
+  cost?: number
+}
+export type TEditableRoom = {
+  users: TUser[]
+} & TBaseRoom
 export type CreateRoomRes = ResType<{
   room_id: string
   room_root_password: string
@@ -36,4 +45,11 @@ export type LoginToEditReq = {
 }
 export type LoginToEditRes = ResType<{
   users: TUser[]
+  cost?: number
 }>
+export type EditRoomReq = {
+  cost?: number
+  password: string
+  users_to_edit: TUser[]
+  users_to_add: Omit<TUser, 'id'>[]
+}

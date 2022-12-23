@@ -1,25 +1,42 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, Input, InputNumber, Message } from 'rsuite'
-import { CreateRoomFormFields } from './types'
+import { Button } from 'rsuite'
 import { useAppDispatch } from '../../store/store'
 import { setCreatedRoom } from '../../store/roomSlice'
 import styles from './styles.module.scss'
-import { FieldArray, Form, Formik } from 'formik'
-import { validateCreateRoomFrom } from './utils'
-import { FormErrorMessage } from '../../components'
+import {
+  CostInput,
+  ErrorMessage,
+  Title,
+  UsersFieldsArray,
+} from '../../components'
 import { useCreateRoom } from '../../api'
+import _ from 'lodash'
+import { useFieldArray, useForm } from 'react-hook-form'
+import { CreateRoomFormFields } from './types'
+import { uniqueNames } from '../../utils/validation'
 
 const CreateRoom: FC = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  const { handleSubmit, control, formState } = useForm<CreateRoomFormFields>({
+    defaultValues: {
+      users: [{ name: '' }, { name: '' }, { name: '' }],
+    },
+  })
+  const { fields, remove, append } = useFieldArray({
+    control,
+    name: 'users',
+    rules: {
+      validate: uniqueNames,
+    },
+  })
+  const [{ data: reqData }, sendCreateRoom] = useCreateRoom()
 
-  const [{ data: reqData, loading }, sendCreateRoom] = useCreateRoom()
-
-  const onSubmit = async (formData: CreateRoomFormFields) => {
+  const onSubmit = async (values: CreateRoomFormFields) => {
     const dataToReq = {
-      users: formData.names.map((name) => ({ name })),
-      cost: formData.cost,
+      users: values.users.map((user) => ({ name: user.name })),
+      cost: values.cost ? +values.cost : undefined,
     }
     const { data } = await sendCreateRoom({
       data: dataToReq,
@@ -37,77 +54,32 @@ const CreateRoom: FC = () => {
   }
 
   return (
-    <Formik
-      initialValues={{ names: [''], cost: undefined }}
-      onSubmit={onSubmit}
-      validate={validateCreateRoomFrom}
-    >
-      {(formik) => (
-        <Form className={styles.form}>
-          <div className={styles.title}>Введите список участников:</div>
-          <FieldArray name="names">
-            {(arrayHelpers) => (
-              <>
-                <ul className={styles.formList}>
-                  {formik.values.names && formik.values.names.length > 0
-                    ? formik.values.names.map((name, idx) => (
-                        <li key={idx} className={styles.formItem}>
-                          <Input
-                            value={name}
-                            onChange={(_, e) => formik.handleChange(e)}
-                            name={`names.${idx}`}
-                          />
-                          <div className={styles.formItemDeleteButton}>
-                            <Button
-                              disabled={formik.values.names.length < 2}
-                              onClick={() => arrayHelpers.remove(idx)}
-                            >
-                              Удалить
-                            </Button>
-                          </div>
-                        </li>
-                      ))
-                    : null}
-                </ul>
-                {reqData?.error && (
-                  <Message className={styles.formError} type="error">
-                    {reqData?.error}
-                  </Message>
-                )}
-                <Button
-                  appearance="ghost"
-                  onClick={() => arrayHelpers.push('')}
-                  block
-                >
-                  Добавить участника
-                </Button>
-                <FormErrorMessage className={styles.formError} name="names" />
-              </>
-            )}
-          </FieldArray>
-          <div className={styles.formSumGroup}>
-            <label className={styles.formSumLabel}>
-              Введите максимальную сумму подарка:
-            </label>
-            <InputNumber
-              name="cost"
-              value={formik.values.cost}
-              onChange={(_, e) => formik.handleChange(e)}
-            />
-            <FormErrorMessage name="cost" className={styles.formError} />
-          </div>
-          <Button
-            appearance="primary"
-            type="submit"
-            disabled={formik.values.names.length < 3}
-            loading={loading}
-            block
-          >
-            Создать комнату
-          </Button>
-        </Form>
-      )}
-    </Formik>
+    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+      <Title>Введите список участников:</Title>
+      <UsersFieldsArray
+        name="users"
+        control={control}
+        fields={fields}
+        append={append}
+        remove={remove}
+        errors={formState.errors}
+      />
+      <CostInput
+        control={control}
+        label="Введите максимальную сумму подарка (не обязательно)"
+        error={formState.errors.cost?.message}
+      />
+      <Button
+        appearance="primary"
+        type="submit"
+        disabled={fields.length < 3}
+        loading={formState.isSubmitting}
+        block
+      >
+        Создать комнату
+      </Button>
+      <ErrorMessage message={reqData?.error} className={styles.formError} />
+    </form>
   )
 }
 

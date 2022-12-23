@@ -1,6 +1,5 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { Outlet } from 'react-router-dom'
-import Footer from './Footer'
 import Header from './Header'
 import styles from './styles.module.scss'
 
@@ -11,7 +10,7 @@ const Main: FC<MainProps> = () => {
     <div className={styles.mainWrapper}>
       <Header />
       <Outlet />
-      <Footer />
+      <div />
     </div>
   )
 }
