@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { Main } from '../layouts'
 import { Home } from '../pages'
 import { CreateRoom, CreateRoomSuccess } from '../pages/createRoom'
@@ -39,6 +39,10 @@ export const router = createBrowserRouter([
       {
         path: 'room/:roomId/edit',
         element: <EditRoom />,
+      },
+      {
+        path: '*',
+        element: <Navigate to="/" />,
       },
     ],
   },
