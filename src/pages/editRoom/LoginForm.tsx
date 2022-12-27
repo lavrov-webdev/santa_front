@@ -1,10 +1,13 @@
 import { FC, useState } from 'react'
-import { Button, Input } from 'rsuite'
+import { Button, Input, InputGroup } from 'rsuite'
 import { useLoginToEdit } from '../../api'
 import { joinRoomToEdit } from '../../store/roomSlice'
 import { useAppDispatch } from '../../store/store'
 import styles from './styles.module.scss'
+import EyeIcon from '@rsuite/icons/legacy/Eye'
+import EyeSlashIcon from '@rsuite/icons/legacy/EyeSlash'
 import { TRequestEditRoomPage } from './types'
+import { useSearchParams } from 'react-router-dom'
 
 type LoginFormProps = {
   roomId: string
@@ -12,9 +15,11 @@ type LoginFormProps = {
 }
 
 const LoginForm: FC<LoginFormProps> = ({ roomId, setRequestStatus }) => {
-  const [pass, setPass] = useState('')
+  const [searchParams] = useSearchParams()
+  const [pass, setPass] = useState<string>(searchParams.get('password') || '')
   const [{ loading }, login] = useLoginToEdit(() => roomId!)
   const dispatch = useAppDispatch()
+  const [passwordIsVisible, setPasswordIsVisible] = useState(false)
 
   const sendLoginData = async () => {
     setRequestStatus(undefined)
@@ -38,15 +43,23 @@ const LoginForm: FC<LoginFormProps> = ({ roomId, setRequestStatus }) => {
     }
   }
 
+  const onPassIconClick = () => {
+    setPasswordIsVisible((p) => !p)
+  }
+
   return (
     <>
       <div className={styles.homeTitle}>Введите пароль от комнаты</div>
-      <Input
-        className={styles.homeInput}
-        value={pass}
-        type="password"
-        onChange={setPass}
-      />
+      <InputGroup inside className={styles.homeInputGroup}>
+        <Input
+          value={pass}
+          type={passwordIsVisible ? 'text' : 'password'}
+          onChange={setPass}
+        />
+        <InputGroup.Button onClick={onPassIconClick}>
+          {!passwordIsVisible ? <EyeIcon /> : <EyeSlashIcon />}
+        </InputGroup.Button>
+      </InputGroup>
       <Button
         loading={loading}
         appearance="primary"

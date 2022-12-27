@@ -17,19 +17,27 @@ const CreateRoomSuccess: FC<CreateRoomSuccessProps> = () => {
       <h2>Комната создана!</h2>
       <div className={styles.successLinkText}>
         <div>
-          Ссылка для подключения к комнате{' '}
-          <a target="_blank" href={createRoomLink(store.roomId!)}>
+          Ссылка для подключения к комнате
+          <a
+            target="_blank"
+            className={styles.successLink}
+            href={createRoomLink(store.roomId!)}
+          >
             {createRoomLink(store.roomId!)}
           </a>
         </div>
         <div>
-          А также ссылка для её редактирования{' '}
-          <a target="_blank" href={createEditRoomLink(store.roomId!)}>
-            {createEditRoomLink(store.roomId!)}
+          А также ссылка для её редактирования
+          <a
+            target="_blank"
+            className={styles.successLink}
+            href={createEditRoomLink(store.roomId!, store.roomPassword!)}
+          >
+            {createEditRoomLink(store.roomId!, store.roomPassword!)}
           </a>
         </div>
       </div>
-      <Message className={styles.successPasswordBlock} type="error">
+      <Message className={styles.successPasswordBlock} type="info">
         <div className={styles.successPasswordBlockText}>
           Запомните этот пароль, он понадобится, чтобы редактировать комнату:{' '}
           <b>{store.roomPassword!}</b>
