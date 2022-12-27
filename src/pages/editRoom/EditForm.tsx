@@ -82,6 +82,7 @@ const EditForm: FC<EditFormProps> = ({ setRequestStatus }) => {
             control={control}
             fields={usersToEdit.fields}
             errors={formState.errors}
+            hasChoisen
           />
         </div>
         <div>

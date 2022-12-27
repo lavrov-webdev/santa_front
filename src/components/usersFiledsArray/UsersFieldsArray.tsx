@@ -1,14 +1,14 @@
 import { FC } from 'react'
 import {
   Control,
-  Controller,
   FieldArrayWithId,
   UseFieldArrayAppend,
   UseFieldArrayRemove,
 } from 'react-hook-form'
-import { Button, Input } from 'rsuite'
+import { Button } from 'rsuite'
 import { ErrorMessage } from '..'
 import styles from './styles.module.scss'
+import User from './User'
 
 type CustomFieldsArrayProps = {
   fields: FieldArrayWithId[]
@@ -17,6 +17,7 @@ type CustomFieldsArrayProps = {
   remove?: UseFieldArrayRemove
   append?: UseFieldArrayAppend<any, any>
   name: string
+  hasChoisen?: boolean
 }
 
 const UsersFieldsArray: FC<CustomFieldsArrayProps> = ({
@@ -26,34 +27,13 @@ const UsersFieldsArray: FC<CustomFieldsArrayProps> = ({
   remove,
   append,
   name,
+  hasChoisen,
 }) => {
   return (
     <ul className={styles.list}>
       {fields.map((user, idx) => (
         <li key={user.id} className={styles.item}>
-          <div className={styles.itemInputWrapper}>
-            <Controller
-              control={control}
-              rules={{
-                required: { value: true, message: 'Имя не может быть пустым' },
-              }}
-              render={({ field }) => (
-                <Input {...field} onChange={(_, e) => field.onChange(e)} />
-              )}
-              name={`${name}.${idx}.name`}
-            />
-            {remove && (
-              <div className={styles.itemDeleteButton}>
-                <Button onClick={() => remove(idx)}>Удалить</Button>
-              </div>
-            )}
-          </div>
-          {errors && errors[name] && (
-            <ErrorMessage
-              message={errors[name][idx]?.name?.message}
-              className={styles.itemErrorMessage}
-            />
-          )}
+          <User {...{ control, hasChoisen, remove, idx, errors, name }} />
         </li>
       ))}
       {append && (

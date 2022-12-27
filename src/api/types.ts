@@ -7,13 +7,16 @@ export type TUser = {
   id: number
   name: string
 }
+export type TEditableUser = {
+  has_choice: boolean
+} & TUser
 export type TBaseRoom = {
   roomId?: string
   roomPassword?: string
   cost?: number
 }
 export type TEditableRoom = {
-  users: TUser[]
+  users: TEditableUser[]
 } & TBaseRoom
 export type CreateRoomRes = ResType<{
   room_id: string
@@ -44,7 +47,7 @@ export type LoginToEditReq = {
   password: string
 }
 export type LoginToEditRes = ResType<{
-  users: TUser[]
+  users: TEditableUser[]
   cost?: number
 }>
 export type EditRoomReq = {
