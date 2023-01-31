@@ -1,25 +1,24 @@
 import { FC } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { Button } from 'rsuite'
-import { useEditRoom } from '../../api'
 import { CostInput, Title, UsersFieldsArray } from '../../components'
-import { useAppSelector } from '../../store/store'
 import { uniqueNames } from '../../utils/validation'
-import { TEditRoomForm, TRequestEditRoomPage } from './types'
+import { TEditRoomForm } from './types'
 import styles from './styles.module.scss'
+import { editRoom, useAppDispatch, useAppSelector } from '../../store'
 
-type EditFormProps = {
-  setRequestStatus: (newVal: TRequestEditRoomPage | undefined) => void
+type TEditRoomProps = {
+  roomId: string
 }
 
-const EditForm: FC<EditFormProps> = ({ setRequestStatus }) => {
-  const roomEdit = useAppSelector((state) => state.room.roomToEdit)
-  const [{}, editRoom] = useEditRoom(() => roomEdit!.roomId!)
+const EditForm: FC<TEditRoomProps> = ({ roomId }) => {
+  const editableRoom = useAppSelector((state) => state.editableRoom)
+  const dispatch = useAppDispatch()
   const { handleSubmit, control, formState, getValues } =
     useForm<TEditRoomForm>({
       defaultValues: {
-        users_to_edit: roomEdit!.users,
-        cost: roomEdit!.cost,
+        users_to_edit: editableRoom.users,
+        cost: editableRoom.cost,
       },
     })
   const usersToEdit = useFieldArray({
@@ -45,31 +44,15 @@ const EditForm: FC<EditFormProps> = ({ setRequestStatus }) => {
   })
 
   const submit = async (values: TEditRoomForm) => {
-    setRequestStatus(undefined)
-    try {
-      const res = await editRoom({
-        data: {
-          users_to_add: values.users_to_add.map((u) => ({ name: u.name })),
-          users_to_edit: values.users_to_edit,
-          password: roomEdit!.roomPassword!,
-          cost: values.cost ? +values.cost : undefined,
-        },
+    dispatch(
+      editRoom({
+        users_to_add: values.users_to_add.map((u) => ({ name: u.name })),
+        users_to_edit: values.users_to_edit,
+        password: editableRoom.password || '',
+        cost: values.cost ? +values.cost : undefined,
+        roomId,
       })
-      if (!res.data.error) {
-        setRequestStatus({
-          type: 'success',
-          message: 'Комната успешно отредактирована',
-        })
-      } else {
-        setRequestStatus({
-          type: 'error',
-          message: res.data.error,
-        })
-      }
-    } catch (e) {
-      if (e instanceof Error)
-        setRequestStatus({ type: 'error', message: e.message })
-    }
+    )
   }
 
   return (

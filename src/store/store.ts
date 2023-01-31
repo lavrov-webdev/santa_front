@@ -1,18 +1,21 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { roomReducer } from './roomSlice'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import { usersReducer } from './usersSlice'
+import { account } from './account'
+import { actualRoom } from './actualRoom'
+import { createdRoom } from './createdRoom'
+import { editableRoom } from './editableRoom'
+import { AppDispatch, RootState } from './types'
 
 const store = configureStore({
   reducer: {
-    room: roomReducer,
-    users: usersReducer,
+    actualRoom: actualRoom.reducer,
+    account: account.reducer,
+    createdRoom: createdRoom.reducer,
+    editableRoom: editableRoom.reducer,
   },
 })
 
-export type RootState = ReturnType<typeof store.getState>
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
-export type AppDispatch = typeof store.dispatch
-export const useAppDispatch: () => AppDispatch = useDispatch //
+export const useAppDispatch: () => AppDispatch = useDispatch
 
 export default store

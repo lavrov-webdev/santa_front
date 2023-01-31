@@ -4,7 +4,7 @@ import { Home } from '../pages'
 import { CreateRoom, CreateRoomSuccess } from '../pages/createRoom'
 import { EditRoom } from '../pages/editRoom'
 import { Login } from '../pages/joinRoom'
-import { SelectReceiver } from '../pages/selectReceiver'
+import { SelectRecipient } from '../pages/selectReceiver'
 import { ViewSelected } from '../pages/viewSelected'
 
 export const router = createBrowserRouter([
@@ -30,7 +30,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'select',
-        element: <SelectReceiver />,
+        element: <SelectRecipient />,
       },
       {
         path: 'view-selected',

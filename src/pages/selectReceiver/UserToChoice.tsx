@@ -2,11 +2,9 @@ import { FC, useState } from 'react'
 import { TUser } from '../../api/types'
 import styles from './styles.module.scss'
 import cn from 'classnames'
-import { useAppDispatch, useAppSelector } from '../../store/store'
+import { selectRecipient, useAppDispatch, useAppSelector } from '../../store'
 import Confetti from 'react-confetti'
 import useWindowSize from 'react-use/lib/useWindowSize'
-import { selectUser } from '../../store/usersSlice'
-import { useSelectUser } from '../../api'
 
 type UserToChoiceProps = {
   id: number
@@ -22,25 +20,23 @@ const UserToChoice: FC<UserToChoiceProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [isConfettiRunning, setIsConfettiRunning] = useState(false)
-  const dispatch = useAppDispatch()
-  const loggedUser = useAppSelector((store) => store.users.loggedUser)
-  const selectedUser = useAppSelector((store) => store.users.selectedUser)
-  const roomId = useAppSelector((state) => state.room.roomId)
   const { width, height } = useWindowSize()
-  const [_, sendSelectUser] = useSelectUser()
+  const account = useAppSelector((state) => state.account)
+  const roomId = useAppSelector((state) => state.actualRoom.id)
+  const dispatch = useAppDispatch()
 
   const selectHandler = async () => {
-    if (!loggedUser || !roomId) return
+    if (!account.id || !roomId) return
     onSelect(true)
     setIsOpen(true)
-    const { data } = await sendSelectUser({
-      data: {
+    await dispatch(
+      selectRecipient({
         selected_user_id: id,
-        choosing_user_id: loggedUser,
+        choosing_user_id: account.id,
         room_id: roomId,
-      },
-    })
-    if (data.error) {
+      })
+    )
+    if (account.errorMessage) {
       onSelect(false)
       setIsOpen(false)
     } else {
@@ -48,7 +44,6 @@ const UserToChoice: FC<UserToChoiceProps> = ({
       setTimeout(() => {
         setIsConfettiRunning(false)
       }, 3000)
-      dispatch(selectUser({ id, name }))
     }
   }
   return (
@@ -62,7 +57,7 @@ const UserToChoice: FC<UserToChoiceProps> = ({
           <div className={styles.userBack}>{name}</div>
         </div>
       </div>
-      {!!selectedUser && (
+      {!!account.recipient && (
         <Confetti
           width={width}
           height={height}

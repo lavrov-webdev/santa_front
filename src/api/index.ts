@@ -1,8 +1,1 @@
-export {
-  useLogin,
-  useGetRoomInfo,
-  useCreateRoom,
-  useSelectUser,
-  useEditRoom,
-  useLoginToEdit,
-} from './hooks'
+export { axiosInstance, baseQuery } from './instance'

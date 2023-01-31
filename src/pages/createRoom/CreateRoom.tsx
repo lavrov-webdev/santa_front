@@ -1,8 +1,5 @@
 import { FC } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { Button } from 'rsuite'
-import { useAppDispatch } from '../../store/store'
-import { setCreatedRoom } from '../../store/roomSlice'
 import styles from './styles.module.scss'
 import {
   CostInput,
@@ -10,15 +7,18 @@ import {
   Title,
   UsersFieldsArray,
 } from '../../components'
-import { useCreateRoom } from '../../api'
-import _ from 'lodash'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { CreateRoomFormFields } from './types'
 import { uniqueNames } from '../../utils/validation'
+import { createRoom, useAppDispatch, useAppSelector } from '../../store'
+import { useNavigate } from 'react-router-dom'
 
 const CreateRoom: FC = () => {
-  const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const createRoomError = useAppSelector(
+    (state) => state.createdRoom.errorMessage
+  )
   const { handleSubmit, control, formState } = useForm<CreateRoomFormFields>({
     defaultValues: {
       users: [{ name: '' }, { name: '' }, { name: '' }],
@@ -31,25 +31,15 @@ const CreateRoom: FC = () => {
       validate: uniqueNames,
     },
   })
-  const [{ data: reqData }, sendCreateRoom] = useCreateRoom()
 
   const onSubmit = async (values: CreateRoomFormFields) => {
     const dataToReq = {
       users: values.users.map((user) => ({ name: user.name })),
       cost: values.cost ? +values.cost : undefined,
     }
-    const { data } = await sendCreateRoom({
-      data: dataToReq,
-    })
-    if (!data) return
-    if (!data?.error) {
-      dispatch(
-        setCreatedRoom({
-          roomId: data.data.room_id,
-          roomPassword: data.data.room_root_password,
-        })
-      )
-      navigate('success')
+    const res = await dispatch(createRoom(dataToReq)).unwrap()
+    if (res) {
+      navigate('/create-room/success')
     }
   }
 
@@ -78,7 +68,7 @@ const CreateRoom: FC = () => {
       >
         Создать комнату
       </Button>
-      <ErrorMessage message={reqData?.error} className={styles.formError} />
+      <ErrorMessage message={createRoomError} className={styles.formError} />
     </form>
   )
 }

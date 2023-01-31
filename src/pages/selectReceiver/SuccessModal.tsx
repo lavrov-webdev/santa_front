@@ -9,16 +9,16 @@ type SuccessModalProps = {
 }
 
 const SuccessModal: FC<SuccessModalProps> = ({ open, handleClose }) => {
-  const selectedUser = useAppSelector((store) => store.users.selectedUser)
-  const roomCost = useAppSelector((store) => store.room.cost)
   const navigate = useNavigate()
+  const roomCost = useAppSelector((state) => state.actualRoom.cost)
+  const recipient = useAppSelector((state) => state.account.recipient)
 
   const closeModal = () => {
     handleClose()
     navigate('/')
   }
 
-  if (!selectedUser) return null
+  if (!recipient) return null
 
   return (
     <Modal open={open} onClose={handleClose}>
@@ -27,7 +27,7 @@ const SuccessModal: FC<SuccessModalProps> = ({ open, handleClose }) => {
       </Modal.Header>
       <Modal.Body>
         <p>
-          Вы выбрали пользователя <b>{selectedUser.name}</b>
+          Вы выбрали пользователя <b>{recipient.name}</b>
         </p>
         {roomCost && (
           <p>

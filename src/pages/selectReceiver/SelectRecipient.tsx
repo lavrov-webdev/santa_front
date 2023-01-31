@@ -1,18 +1,19 @@
-import React, { FC, useEffect, useState } from 'react'
-import { useAppSelector } from '../../store/store'
-import { useProtect } from '../../hooks'
+import { FC, useEffect, useState } from 'react'
 import UserToChoice from './UserToChoice'
 import styles from './styles.module.scss'
 import SuccessModal from './SuccessModal'
 import { useLatest } from 'react-use'
+import { useAppSelector } from '../../store'
+import { useNavigate } from 'react-router-dom'
 
-const SelectReceiver: FC = () => {
-  const usersToChoice = useAppSelector((state) => state.users.usersToChoice)
+const SelectRecipient: FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [hasOpenedCard, setHasOpenedCard] = useState(false)
+  const potentialRecipients = useAppSelector(
+    (state) => state.account.potentialRecipients
+  )
   const hacOpenedCardLatest = useLatest(hasOpenedCard)
-  const protect = () => usersToChoice.length === 0
-  useProtect([protect], [usersToChoice])
+  const navigate = useNavigate()
 
   useEffect(() => {
     setTimeout(() => {
@@ -20,10 +21,16 @@ const SelectReceiver: FC = () => {
     }, 2000)
   }, [hasOpenedCard])
 
+  useEffect(() => {
+    if (potentialRecipients.length < 1) {
+      navigate('/')
+    }
+  }, [potentialRecipients])
+
   return (
     <>
       <div className={styles.selectList}>
-        {usersToChoice.map((u) => (
+        {potentialRecipients.map((u) => (
           <UserToChoice
             onSelect={setHasOpenedCard}
             hasOpenedCard={hasOpenedCard}
@@ -41,4 +48,4 @@ const SelectReceiver: FC = () => {
   )
 }
 
-export default SelectReceiver
+export default SelectRecipient
