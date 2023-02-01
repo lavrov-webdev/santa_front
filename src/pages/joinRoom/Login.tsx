@@ -1,5 +1,5 @@
 import { FC, useEffect, useMemo, useState } from 'react'
-import { Button, Loader, SelectPicker } from 'rsuite'
+import { Button, SelectPicker } from 'rsuite'
 import { useNavigate, useParams } from 'react-router-dom'
 import {
   getRoomInfo,
@@ -8,6 +8,7 @@ import {
   checkRecipient,
   getPotentialRecipients,
 } from '../../store'
+import { Loader } from '../../components'
 import styles from './styles.module.scss'
 
 const Login: FC = () => {
