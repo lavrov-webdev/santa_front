@@ -27,7 +27,6 @@ export const account = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(api.checkRecipient.fulfilled, (state, action) => {
-      if (!action.payload) return state
       state.errorMessage = undefined
       state.isLoading = false
       state.recipient = action.payload.recipient
@@ -36,7 +35,6 @@ export const account = createSlice({
     builder.addCase(
       api.getPotentialRecipients.fulfilled,
       (state, { payload }) => {
-        if (!payload) return state
         state.isLoading = false
         state.errorMessage = undefined
         state.potentialRecipients = shuffle(payload.potentialRecipients)

@@ -22,10 +22,10 @@ export const actualRoom = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(api.getRoomInfo.fulfilled, (state, { payload }) => {
+      state.isLoading = false
       if (payload?.users_to_login && payload.users_to_login.length < 1) {
         state.errorMessage = 'В комнате нет пользователей'
       } else {
-        state.isLoading = false
         state.errorMessage = undefined
         state.usersToLogin = payload?.users_to_login || []
         state.cost = payload?.cost || null
@@ -33,10 +33,12 @@ export const actualRoom = createSlice({
       }
     })
     builder.addCase(api.getRoomInfo.pending, (state) => {
+      state.errorMessage = undefined
       state.isLoading = true
     })
     builder.addCase(api.getRoomInfo.rejected, (state, { payload }) => {
       state.errorMessage = payload
+      state.isLoading = false
     })
   },
 })

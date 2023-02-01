@@ -1,5 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { TUser } from '../../api/types'
+import { isPendingAction, isRejectedAction } from '../../utils/matchers'
 import { TStoreWithErrorAndLoadin } from '../types'
 import * as api from './api'
 
@@ -26,30 +27,27 @@ export const editableRoom = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(api.loginToEditRoom.pending, () => ({
-      ...initialState,
-      isLoading: true,
-    }))
     builder.addCase(api.loginToEditRoom.fulfilled, (state, { payload }) => {
       state.isLoading = false
       state.errorMessage = undefined
-      state.id = payload?.id
-      state.users = payload?.users || []
-      state.cost = payload?.cost || null
-      state.password = payload?.password || undefined
-    })
-    builder.addCase(api.loginToEditRoom.rejected, (state, { payload }) => {
-      state.errorMessage = payload as string
-    })
-
-    builder.addCase(api.editRoom.pending, (state) => {
-      state.isLoading = true
+      state.id = payload.id
+      state.users = payload.users
+      state.cost = payload.cost || null
+      state.password = payload.password
     })
     builder.addCase(api.editRoom.fulfilled, (state) => {
       state.isRoomEdited = true
     })
-    builder.addCase(api.editRoom.rejected, (state, { payload }) => {
-      state.errorMessage = payload as string
+    builder.addMatcher(isPendingAction('editableRoom'), (state) => {
+      state.isLoading = true
+      state.errorMessage = undefined
     })
+    builder.addMatcher(
+      isRejectedAction('editableRoom'),
+      (state, { payload }) => {
+        state.isLoading = false
+        state.errorMessage = payload
+      }
+    )
   },
 })

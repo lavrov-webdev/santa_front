@@ -8,6 +8,7 @@ import {
   SelectUserReq,
   TUser,
 } from '../../api/types'
+import { TRejectValueString } from '../types'
 
 type TCheckRecipientReturn = {
   recipient: TUser | undefined
@@ -36,46 +37,47 @@ export const checkRecipient = createAsyncThunk<
   }
 })
 
-export const getPotentialRecipients = createAsyncThunk(
-  'account/getPotentialRecipients',
-  async (reqData: LoginRoomReq, { rejectWithValue }) => {
-    try {
-      const { data } = await axiosInstance.post<GetPotentialRecipientsRes>(
-        'room/login',
-        {
-          ...reqData,
-        }
-      )
-      if (data.error) {
-        rejectWithValue(data.error)
+type TGetPotentialRecipientsRes = {
+  potentialRecipients: TUser[]
+  id: number
+}
+
+export const getPotentialRecipients = createAsyncThunk<
+  TGetPotentialRecipientsRes,
+  LoginRoomReq,
+  TRejectValueString
+>('account/getPotentialRecipients', async (reqData, { rejectWithValue }) => {
+  try {
+    const { data } = await axiosInstance.post<GetPotentialRecipientsRes>(
+      'room/login',
+      {
+        ...reqData,
       }
-      return {
-        potentialRecipients: data.data.users_to_select,
-        id: reqData.user_id,
-      }
-    } catch (e) {
-      if (e instanceof Error) rejectWithValue(e.message)
+    )
+    if (data.error) {
+      return rejectWithValue(data.error)
     }
+    return {
+      potentialRecipients: data.data.users_to_select,
+      id: reqData.user_id,
+    }
+  } catch (e) {
+    return rejectWithValue(e.message)
   }
-)
+})
 
 export const selectRecipient = createAsyncThunk<
-  number | undefined,
+  number,
   SelectUserReq,
-  {
-    rejectValue: string
+  TRejectValueString
+>('account/selectRecipient', async (reqData, { rejectWithValue }) => {
+  try {
+    const { data } = await axiosInstance.put<ResType<never>>('room/select', {
+      ...reqData,
+    })
+    if (data.error) return rejectWithValue(data.error)
+    return reqData.selected_user_id
+  } catch (e) {
+    return rejectWithValue(e.message)
   }
->(
-  'account/selectRecipient',
-  async (reqData: SelectUserReq, { rejectWithValue }) => {
-    try {
-      const { data } = await axiosInstance.put<ResType<never>>('room/select', {
-        ...reqData,
-      })
-      if (data.error) return rejectWithValue(data.error)
-      return reqData.selected_user_id
-    } catch (e) {
-      if (e instanceof Error) return rejectWithValue(e.message)
-    }
-  }
-)
+})

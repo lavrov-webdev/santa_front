@@ -33,7 +33,7 @@ export const createdRoom = createSlice({
     })
     builder.addCase(api.createRoom.rejected, (state, { payload }) => {
       state.isLoading = false
-      state.errorMessage = payload as string
+      state.errorMessage = payload
     })
   },
 })

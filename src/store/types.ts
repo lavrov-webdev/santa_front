@@ -7,3 +7,7 @@ export type TStoreWithErrorAndLoadin = {
   errorMessage: string | undefined
   isLoading: boolean
 }
+
+export type TRejectValueString = {
+  rejectValue: string
+}
