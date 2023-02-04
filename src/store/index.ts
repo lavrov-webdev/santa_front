@@ -1,4 +1,4 @@
-export { store, useAppSelector, useAppDispatch, persistor } from './store'
+export { store, useAppSelector, useAppDispatch, reducer } from './store'
 export * from './actualRoom'
 export * from './account'
 export * from './createdRoom'
