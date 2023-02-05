@@ -2,12 +2,15 @@ import { RouterProvider } from 'react-router-dom'
 import { router } from './router'
 import 'rsuite/dist/rsuite.min.css'
 import { Provider } from 'react-redux'
-import { store } from './store'
+import { persistor, store } from './store'
+import { PersistGate } from 'redux-persist/integration/react'
 
 function App() {
   return (
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <PersistGate persistor={persistor}>
+        <RouterProvider router={router} />
+      </PersistGate>
     </Provider>
   )
 }
