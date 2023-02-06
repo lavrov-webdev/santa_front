@@ -56,7 +56,11 @@ const User: FC<UserProps> = ({
             required: { value: true, message: 'Имя не может быть пустым' },
           }}
           render={({ field }) => (
-            <Input {...field} onChange={(_, e) => field.onChange(e)} />
+            <Input
+              data-testid={field.name}
+              {...field}
+              onChange={(_, e) => field.onChange(e)}
+            />
           )}
           name={`${name}.${idx}.name`}
         />

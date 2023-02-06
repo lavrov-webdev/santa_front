@@ -14,7 +14,9 @@ const CostInput: FC<CostInputProps> = ({ control, error, label }) => {
   return (
     <>
       <div className={styles.wrapper}>
-        <label className={styles.label}>{label}</label>
+        <label className={styles.label} htmlFor="cost">
+          {label}
+        </label>
         <Controller
           name="cost"
           rules={{
@@ -25,7 +27,11 @@ const CostInput: FC<CostInputProps> = ({ control, error, label }) => {
           }}
           control={control}
           render={({ field }) => (
-            <InputNumber {...field} onChange={(_, e) => field.onChange(e)} />
+            <InputNumber
+              id="cost"
+              {...field}
+              onChange={(_, e) => field.onChange(e)}
+            />
           )}
         />
         <ErrorMessage message={error} className={styles.error} />

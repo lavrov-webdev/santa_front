@@ -1,1 +1,1 @@
-export { axiosInstance, baseQuery } from './instance'
+export { axiosInstance } from './instance'

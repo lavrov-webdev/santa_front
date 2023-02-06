@@ -1,0 +1,48 @@
+{
+  "numTotalTestSuites": 2,
+  "numPassedTestSuites": 2,
+  "numFailedTestSuites": 0,
+  "numPendingTestSuites": 0,
+  "numTotalTests": 3,
+  "numPassedTests": 3,
+  "numFailedTests": 0,
+  "numPendingTests": 0,
+  "numTodoTests": 0,
+  "startTime": 1675664293558,
+  "success": true,
+  "testResults": [
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["", "create room page"],
+          "fullName": " create room page adding a new user",
+          "status": "passed",
+          "title": "adding a new user",
+          "duration": 72,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "create room page"],
+          "fullName": " create room page create a room/success",
+          "status": "passed",
+          "title": "create a room/success",
+          "duration": 27,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "create room page"],
+          "fullName": " create room page create a room/failed",
+          "status": "passed",
+          "title": "create a room/failed",
+          "duration": 23,
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1675664297617,
+      "endTime": 1675664297753,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/dm.lavrov/Desktop/other/santa/src/pages/createRoom/createRoom.spec.tsx"
+    }
+  ]
+}
