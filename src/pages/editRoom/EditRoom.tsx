@@ -13,7 +13,7 @@ const EditRoom: FC = () => {
 
   return (
     <div className={styles.wrapper}>
-      {editableRoom.id ? (
+      {editableRoom.id === roomId ? (
         <EditForm roomId={roomId || ''} />
       ) : (
         <LoginForm roomId={roomId || ''} />
