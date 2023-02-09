@@ -1,12 +1,11 @@
 import { FC, useEffect, useMemo, useState } from 'react'
 import { Button, SelectPicker } from 'rsuite'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import {
   getRoomInfo,
   useAppDispatch,
   useAppSelector,
-  checkRecipient,
-  getPotentialRecipients,
+  useLogin,
 } from '../../store'
 import { Loader } from '../../components'
 import styles from './styles.module.scss'
@@ -14,9 +13,9 @@ import styles from './styles.module.scss'
 const Login: FC = () => {
   const { roomId } = useParams()
   const dispatch = useAppDispatch()
-  const navigate = useNavigate()
   const actualRoom = useAppSelector((state) => state.actualRoom)
   const account = useAppSelector((state) => state.account)
+  const login = useLogin()
 
   const [selectedUser, setSelectedUser] = useState<number | null>(null)
 
@@ -34,20 +33,7 @@ const Login: FC = () => {
   }, [])
 
   const onLogin = async () => {
-    if (!selectedUser) return
-    const loginData = {
-      user_id: selectedUser,
-      room_id: roomId || '',
-    }
-    const checkRecipientRes = await dispatch(checkRecipient(loginData)).unwrap()
-    if (checkRecipientRes.recipient) {
-      navigate('/view-selected')
-      return
-    }
-    const getPotentialRecipientsRes = await dispatch(
-      getPotentialRecipients(loginData)
-    ).unwrap()
-    if (getPotentialRecipientsRes) navigate('/select')
+    await login(selectedUser, roomId)
   }
 
   const renderContent = () => {

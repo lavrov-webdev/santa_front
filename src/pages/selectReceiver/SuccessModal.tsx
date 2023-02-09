@@ -15,7 +15,7 @@ const SuccessModal: FC<SuccessModalProps> = ({ open, handleClose }) => {
 
   const closeModal = () => {
     handleClose()
-    navigate('/')
+    navigate('/view-selected')
   }
 
   if (!recipient) return null

@@ -1,25 +1,20 @@
 import { FC } from 'react'
-import { Message } from 'rsuite'
+import { Button, Message } from 'rsuite'
 import { createEditRoomLink, createRoomLink } from './utils'
 import styles from './styles.module.scss'
-import { useAppSelector } from '../../store'
-import { LinkButton } from '../../components'
+import { createdRoomActions, useAppDispatch, useAppSelector } from '../../store'
 
 type CreateRoomSuccessProps = {}
 
 const CreateRoomSuccess: FC<CreateRoomSuccessProps> = () => {
   const store = useAppSelector((state) => state.createdRoom)
+  const dispatch = useAppDispatch()
 
-  if (!store.id || !store.adminPassword) {
-    return (
-      <div className={styles.successEmptyRoom}>
-        <h2>Вы пока не создали комнату</h2>
-        <LinkButton appearance="primary" size="lg" block to="/create-room/">
-          Создать
-        </LinkButton>
-      </div>
-    )
+  const clear = () => {
+    dispatch(createdRoomActions.clear())
   }
+
+  if (!store.id || !store.adminPassword) return null
 
   return (
     <div>
@@ -52,6 +47,14 @@ const CreateRoomSuccess: FC<CreateRoomSuccessProps> = () => {
           <b>{store.adminPassword}</b>
         </div>
       </Message>
+      <Button
+        className={styles.successBackButton}
+        appearance="ghost"
+        size="lg"
+        onClick={clear}
+      >
+        Создать новую комнату
+      </Button>
     </div>
   )
 }

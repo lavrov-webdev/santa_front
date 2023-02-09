@@ -1,2 +1,2 @@
 export * from './api'
-export { createdRoom } from './slice'
+export { createdRoom, createdRoomActions } from './slice'

@@ -1,14 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../api'
-import {
-  EditRoomReq,
-  LoginToEditReq,
-  LoginToEditRes,
-  ResType,
-} from '../../api/types'
+import { EditRoomReq, LoginToEditReq, LoginToEditRes } from '../../api/types'
 import { TRejectValueString } from '../types'
 
-type TLogingToEditRoomRes = LoginToEditRes['data'] & {
+type TLogingToEditRoomRes = LoginToEditRes & {
   id: string
   password: string
 }
@@ -25,13 +20,10 @@ export const loginToEditRoom = createAsyncThunk<
         password: reqData.password,
       }
     )
-    if (data.error) {
-      return rejectWithValue(data.error)
-    } else {
-      return { ...data.data, id: reqData.roomId, password: reqData.password }
-    }
+    return { ...data, id: reqData.roomId, password: reqData.password }
   } catch (e) {
-    return rejectWithValue(e.message)
+    console.log(e)
+    return rejectWithValue(e.response.data.detail)
   }
 })
 
@@ -41,19 +33,13 @@ export const editRoom = createAsyncThunk<
   TRejectValueString
 >('editableRoom/editRoom', async (newRoom, { rejectWithValue }) => {
   try {
-    const { data } = await axiosInstance.put<ResType<never>>(
-      `room/${newRoom.roomId}/edit`,
-      {
-        cost: newRoom.cost,
-        password: newRoom.password,
-        users_to_edit: newRoom.users_to_edit,
-        users_to_add: newRoom.users_to_add,
-      }
-    )
-    if (data.error) {
-      return rejectWithValue(data.error)
-    }
+    const { data } = await axiosInstance.put(`room/${newRoom.roomId}/edit`, {
+      cost: newRoom.cost,
+      password: newRoom.password,
+      users_to_edit: newRoom.users_to_edit,
+      users_to_add: newRoom.users_to_add,
+    })
   } catch (e) {
-    return rejectWithValue(e.message)
+    return rejectWithValue(e.response.data.detail)
   }
 })

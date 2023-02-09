@@ -4,7 +4,7 @@ import { CreateRoomReq, CreateRoomRes } from '../../api/types'
 import { TRejectValueString } from '../types'
 
 export const createRoom = createAsyncThunk<
-  CreateRoomRes['data'],
+  CreateRoomRes,
   CreateRoomReq,
   TRejectValueString
 >('createdRoom/createRoom', async (reqData, { rejectWithValue }) => {
@@ -12,12 +12,8 @@ export const createRoom = createAsyncThunk<
     const { data } = await axiosInstance.post<CreateRoomRes>('room/create', {
       ...reqData,
     })
-    if (data.error) {
-      return rejectWithValue(data.error)
-    } else {
-      return data.data
-    }
+    return data
   } catch (e) {
-    return rejectWithValue(e.message)
+    return rejectWithValue(e.response.data.detail)
   }
 })

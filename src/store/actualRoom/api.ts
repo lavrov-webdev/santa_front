@@ -5,7 +5,7 @@ import { TRejectValueString } from '../types'
 
 type TGetRoomInfoRes = {
   id: string
-} & GetRoomInfoRes['data']
+} & GetRoomInfoRes
 
 export const getRoomInfo = createAsyncThunk<
   TGetRoomInfoRes,
@@ -14,12 +14,8 @@ export const getRoomInfo = createAsyncThunk<
 >('actualRoom/getRoomInfo', async (roomId: string, { rejectWithValue }) => {
   try {
     const { data } = await axiosInstance.get<GetRoomInfoRes>(`/room/${roomId}`)
-    if (data.error) {
-      return rejectWithValue(data.error)
-    } else {
-      return { ...data.data, id: roomId }
-    }
+    return { ...data, id: roomId }
   } catch (error) {
-    return rejectWithValue(error.message)
+    return rejectWithValue(error.response.data.detail)
   }
 })

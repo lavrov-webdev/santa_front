@@ -4,7 +4,6 @@ import {
   GetPotentialRecipientsRes,
   GetRecipientRes,
   LoginRoomReq,
-  ResType,
   SelectUserReq,
   TUser,
 } from '../../api/types'
@@ -25,9 +24,16 @@ export const checkRecipient = createAsyncThunk<
         ...reqData,
       },
     })
-    return {
-      recipient: data.data,
-      id: reqData.user_id,
+    if (data.id && data.name) {
+      return {
+        recipient: data,
+        id: reqData.user_id,
+      }
+    } else {
+      return {
+        recipient: undefined,
+        id: reqData.user_id,
+      }
     }
   } catch {
     return {
@@ -54,15 +60,12 @@ export const getPotentialRecipients = createAsyncThunk<
         ...reqData,
       }
     )
-    if (data.error) {
-      return rejectWithValue(data.error)
-    }
     return {
-      potentialRecipients: data.data.users_to_select,
+      potentialRecipients: data.users_to_select,
       id: reqData.user_id,
     }
   } catch (e) {
-    return rejectWithValue(e.message)
+    return rejectWithValue(e.response.data.detail)
   }
 })
 
@@ -72,12 +75,11 @@ export const selectRecipient = createAsyncThunk<
   TRejectValueString
 >('account/selectRecipient', async (reqData, { rejectWithValue }) => {
   try {
-    const { data } = await axiosInstance.put<ResType<never>>('room/select', {
+    const { data } = await axiosInstance.put('room/select', {
       ...reqData,
     })
-    if (data.error) return rejectWithValue(data.error)
     return reqData.selected_user_id
   } catch (e) {
-    return rejectWithValue(e.message)
+    return rejectWithValue(e.response.data.message)
   }
 })

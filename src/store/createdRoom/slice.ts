@@ -19,7 +19,9 @@ const initialState: TCreatedRoom = {
 export const createdRoom = createSlice({
   name: 'createdRoom',
   initialState,
-  reducers: {},
+  reducers: {
+    clear: () => ({ ...initialState }),
+  },
   extraReducers: (builder) => {
     builder.addCase(api.createRoom.fulfilled, (state, { payload }) => {
       state.id = payload.room_id
@@ -37,3 +39,5 @@ export const createdRoom = createSlice({
     })
   },
 })
+
+export const createdRoomActions = createdRoom.actions
