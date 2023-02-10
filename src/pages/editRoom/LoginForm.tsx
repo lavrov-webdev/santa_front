@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, FormEventHandler, useState } from 'react'
 import { Button, Input, InputGroup } from 'rsuite'
 import styles from './styles.module.scss'
 import EyeIcon from '@rsuite/icons/legacy/Eye'
@@ -20,7 +20,8 @@ const LoginForm: FC<LoginFormProps> = ({ roomId }) => {
   const [passwordIsVisible, setPasswordIsVisible] = useState(false)
   const loading = useAppSelector((state) => state.editableRoom.isLoading)
 
-  const sendLoginData = async () => {
+  const sendLoginData: FormEventHandler = async (e) => {
+    e.preventDefault()
     dispatch(
       loginToEditRoom({
         roomId,
@@ -34,7 +35,7 @@ const LoginForm: FC<LoginFormProps> = ({ roomId }) => {
   }
 
   return (
-    <>
+    <form onSubmit={sendLoginData}>
       <div className={styles.homeTitle}>Введите пароль от комнаты</div>
       <InputGroup inside className={styles.homeInputGroup}>
         <Input
@@ -50,11 +51,12 @@ const LoginForm: FC<LoginFormProps> = ({ roomId }) => {
         loading={loading}
         appearance="primary"
         onClick={sendLoginData}
+        type="submit"
         block
       >
         Зайти
       </Button>
-    </>
+    </form>
   )
 }
 

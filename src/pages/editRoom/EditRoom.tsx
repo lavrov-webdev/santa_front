@@ -22,11 +22,6 @@ const EditRoom: FC = () => {
         message={editableRoom.errorMessage}
         className={styles.homeReqStatus}
       />
-      {editableRoom.isRoomEdited && (
-        <Message className={styles.homeReqStatus}>
-          Комната успешно отредактирована
-        </Message>
-      )}
     </div>
   )
 }

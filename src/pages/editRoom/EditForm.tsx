@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
-import { Button } from 'rsuite'
+import { Button, Notification, useToaster } from 'rsuite'
 import { CostInput, Title, UsersFieldsArray } from '../../components'
 import { uniqueNames } from '../../utils/validation'
 import { TEditRoomForm } from './types'
@@ -14,7 +14,8 @@ type TEditRoomProps = {
 const EditForm: FC<TEditRoomProps> = ({ roomId }) => {
   const editableRoom = useAppSelector((state) => state.editableRoom)
   const dispatch = useAppDispatch()
-  const { handleSubmit, control, formState, getValues } =
+  const toast = useToaster()
+  const { handleSubmit, control, formState, getValues, setValue } =
     useForm<TEditRoomForm>({
       defaultValues: {
         users_to_edit: editableRoom.users,
@@ -43,8 +44,16 @@ const EditForm: FC<TEditRoomProps> = ({ roomId }) => {
     },
   })
 
+  const successMessage = (
+    <>
+      <Notification type="success" header="Отлично!" closable>
+        Комната успешно отредактирована
+      </Notification>
+    </>
+  )
+
   const submit = async (values: TEditRoomForm) => {
-    dispatch(
+    await dispatch(
       editRoom({
         users_to_add: values.users_to_add.map((u) => ({ name: u.name })),
         users_to_edit: values.users_to_edit,
@@ -53,6 +62,13 @@ const EditForm: FC<TEditRoomProps> = ({ roomId }) => {
         roomId,
       })
     )
+      .unwrap()
+      .then((d) => {
+        setValue('users_to_add', [])
+        setValue('users_to_edit', d.users)
+        setValue('cost', d.cost || null)
+        toast.push(successMessage, { placement: 'topCenter' })
+      })
   }
 
   return (
@@ -69,7 +85,9 @@ const EditForm: FC<TEditRoomProps> = ({ roomId }) => {
           />
         </div>
         <div>
-          <Title size="m">Добавить новых пользователей</Title>
+          <Title style={{ marginBottom: '1rem' }} size="m">
+            Добавить новых пользователей
+          </Title>
           <UsersFieldsArray
             name="users_to_add"
             control={control}

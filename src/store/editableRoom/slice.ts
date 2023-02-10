@@ -1,22 +1,20 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { TUser } from '../../api/types'
+import { createSlice } from '@reduxjs/toolkit'
+import { TEditableUser } from '../../api/types'
 import { isPendingAction, isRejectedAction } from '../../utils/matchers'
 import { TStoreWithErrorAndLoadin } from '../types'
 import * as api from './api'
 
 type TEditableRoom = {
-  users: TUser[]
+  users: TEditableUser[]
   cost: number | null
   id: string | undefined
   password: string | undefined
-  isRoomEdited: boolean
 } & TStoreWithErrorAndLoadin
 
 const initialState: TEditableRoom = {
   users: [],
   cost: null,
   id: undefined,
-  isRoomEdited: false,
   password: undefined,
   isLoading: false,
   errorMessage: undefined,
@@ -36,7 +34,6 @@ export const editableRoom = createSlice({
       state.password = payload.password
     })
     builder.addCase(api.editRoom.fulfilled, (state, { payload }) => {
-      state.isRoomEdited = true
       state.errorMessage = undefined
       state.users = payload.users
       state.cost = payload.cost || null
