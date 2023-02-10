@@ -28,17 +28,21 @@ export const loginToEditRoom = createAsyncThunk<
 })
 
 export const editRoom = createAsyncThunk<
-  undefined,
+  LoginToEditRes,
   EditRoomReq,
   TRejectValueString
 >('editableRoom/editRoom', async (newRoom, { rejectWithValue }) => {
   try {
-    const { data } = await axiosInstance.put(`room/${newRoom.roomId}/edit`, {
-      cost: newRoom.cost,
-      password: newRoom.password,
-      users_to_edit: newRoom.users_to_edit,
-      users_to_add: newRoom.users_to_add,
-    })
+    const { data } = await axiosInstance.put<LoginToEditRes>(
+      `room/${newRoom.roomId}/edit`,
+      {
+        cost: newRoom.cost,
+        password: newRoom.password,
+        users_to_edit: newRoom.users_to_edit,
+        users_to_add: newRoom.users_to_add,
+      }
+    )
+    return data
   } catch (e) {
     return rejectWithValue(e.response.data.detail)
   }

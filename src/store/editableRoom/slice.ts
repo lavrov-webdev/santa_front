@@ -35,8 +35,11 @@ export const editableRoom = createSlice({
       state.cost = payload.cost || null
       state.password = payload.password
     })
-    builder.addCase(api.editRoom.fulfilled, (state) => {
+    builder.addCase(api.editRoom.fulfilled, (state, { payload }) => {
       state.isRoomEdited = true
+      state.errorMessage = undefined
+      state.users = payload.users
+      state.cost = payload.cost || null
     })
     builder.addMatcher(isPendingAction('editableRoom'), (state) => {
       state.isLoading = true
