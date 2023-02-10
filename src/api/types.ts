@@ -1,5 +1,5 @@
 export type TUser = {
-  id: number
+  id: string
   name: string
 }
 export type TEditableUser = {
@@ -33,12 +33,12 @@ export type GetPotentialRecipientsRes = {
 export type GetRecipientRes = TUser
 export type LoginRoomReq = {
   room_id: string
-  user_id: number
+  user_id: string
 }
 export type SelectUserReq = {
   room_id: string
-  choosing_user_id: number
-  selected_user_id: number
+  choosing_user_id: string
+  selected_user_id: string
 }
 export type LoginToEditReq = {
   password: string

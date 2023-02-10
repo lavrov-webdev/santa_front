@@ -8,7 +8,7 @@ import * as api from './api'
 type TAccount = {
   potentialRecipients: TUser[]
   recipient: TUser | undefined
-  id: number | null
+  id: string | null
   password: string | undefined
 } & TStoreWithErrorAndLoadin
 

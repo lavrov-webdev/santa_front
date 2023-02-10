@@ -11,7 +11,7 @@ import { TRejectValueString } from '../types'
 
 type TCheckRecipientReturn = {
   recipient: TUser | undefined
-  id: number
+  id: string
 }
 
 export const checkRecipient = createAsyncThunk<
@@ -45,7 +45,7 @@ export const checkRecipient = createAsyncThunk<
 
 type TGetPotentialRecipientsRes = {
   potentialRecipients: TUser[]
-  id: number
+  id: string
 }
 
 export const getPotentialRecipients = createAsyncThunk<
@@ -70,7 +70,7 @@ export const getPotentialRecipients = createAsyncThunk<
 })
 
 export const selectRecipient = createAsyncThunk<
-  number,
+  string,
   SelectUserReq,
   TRejectValueString
 >('account/selectRecipient', async (reqData, { rejectWithValue }) => {

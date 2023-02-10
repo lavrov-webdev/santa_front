@@ -6,7 +6,7 @@ export const useLogin = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  return async (selectedUser: number | null, roomId?: string) => {
+  return async (selectedUser: string | null, roomId?: string) => {
     if (!selectedUser) return
     const loginData = {
       user_id: selectedUser,
