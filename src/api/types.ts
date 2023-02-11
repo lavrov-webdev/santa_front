@@ -54,7 +54,7 @@ export type EditRoomReq = {
   cost?: number
   password: string
   users_to_edit: TUser[]
-  users_to_add: Omit<TUser, 'id'>[]
+  users_to_add: Omit<TUser, 'id' | 'has_password'>[]
   roomId: string
 }
 export type SetPasswordReq = {

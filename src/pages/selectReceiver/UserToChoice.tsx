@@ -7,10 +7,10 @@ import Confetti from 'react-confetti'
 import useWindowSize from 'react-use/lib/useWindowSize'
 
 type UserToChoiceProps = {
-  id: number
+  id: string
   hasOpenedCard: boolean
   onSelect: (v: boolean) => void
-} & Omit<TUser, 'id'>
+} & Omit<TUser, 'id' | 'has_password'>
 
 const UserToChoice: FC<UserToChoiceProps> = ({
   id,
