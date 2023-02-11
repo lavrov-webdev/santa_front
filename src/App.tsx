@@ -1,6 +1,7 @@
 import { RouterProvider } from 'react-router-dom'
 import { router } from './router'
 import 'rsuite/dist/rsuite.min.css'
+import 'react-toastify/dist/ReactToastify.min.css'
 import { Provider } from 'react-redux'
 import { persistor, store } from './store'
 import { PersistGate } from 'redux-persist/integration/react'

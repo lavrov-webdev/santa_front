@@ -1,11 +1,12 @@
 import { FC } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
-import { Button, Notification, useToaster } from 'rsuite'
+import { Button } from 'rsuite'
 import { CostInput, Title, UsersFieldsArray } from '../../components'
 import { uniqueNames } from '../../utils/validation'
 import { TEditRoomForm } from './types'
 import styles from './styles.module.scss'
 import { editRoom, useAppDispatch, useAppSelector } from '../../store'
+import { Slide, toast, ToastContainer } from 'react-toastify'
 
 type TEditRoomProps = {
   roomId: string
@@ -14,7 +15,6 @@ type TEditRoomProps = {
 const EditForm: FC<TEditRoomProps> = ({ roomId }) => {
   const editableRoom = useAppSelector((state) => state.editableRoom)
   const dispatch = useAppDispatch()
-  const toast = useToaster()
   const { handleSubmit, control, formState, getValues, setValue } =
     useForm<TEditRoomForm>({
       defaultValues: {
@@ -44,14 +44,6 @@ const EditForm: FC<TEditRoomProps> = ({ roomId }) => {
     },
   })
 
-  const successMessage = (
-    <>
-      <Notification type="success" header="Отлично!" closable>
-        Комната успешно отредактирована
-      </Notification>
-    </>
-  )
-
   const submit = async (values: TEditRoomForm) => {
     await dispatch(
       editRoom({
@@ -67,7 +59,7 @@ const EditForm: FC<TEditRoomProps> = ({ roomId }) => {
         setValue('users_to_add', [])
         setValue('users_to_edit', d.users)
         setValue('cost', d.cost || null)
-        toast.push(successMessage, { placement: 'topCenter' })
+        toast.success('Комната отредактирована!')
       })
   }
 
@@ -115,6 +107,15 @@ const EditForm: FC<TEditRoomProps> = ({ roomId }) => {
           </Button>
         </div>
       </form>
+      <ToastContainer
+        theme={'light'}
+        position="top-center"
+        autoClose={5_000}
+        transition={Slide}
+        hideProgressBar
+        closeOnClick
+        pauseOnHover
+      />
     </>
   )
 }
