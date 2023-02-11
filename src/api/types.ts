@@ -1,6 +1,7 @@
 export type TUser = {
   id: string
   name: string
+  has_password: boolean
 }
 export type TEditableUser = {
   has_choice: boolean
@@ -34,6 +35,7 @@ export type GetRecipientRes = TUser
 export type LoginRoomReq = {
   room_id: string
   user_id: string
+  password: string
 }
 export type SelectUserReq = {
   room_id: string
@@ -55,4 +57,8 @@ export type EditRoomReq = {
   users_to_add: Omit<TUser, 'id'>[]
   roomId: string
 }
-export type GetSelectedUserRes = { name?: string; id?: number }
+export type SetPasswordReq = {
+  password: string
+  user_id: string
+  room_id: string
+}

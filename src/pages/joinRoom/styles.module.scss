@@ -31,3 +31,13 @@
     }
   }
 }
+
+.password {
+  &Wrapper {
+    margin-top: 2rem;
+  }
+
+  &Input {
+    margin: 1rem 0;
+  }
+}

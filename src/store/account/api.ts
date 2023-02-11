@@ -5,9 +5,11 @@ import {
   GetRecipientRes,
   LoginRoomReq,
   SelectUserReq,
+  SetPasswordReq,
   TUser,
 } from '../../api/types'
 import { TRejectValueString } from '../types'
+import { getErrorDetail } from '../../utils/other'
 
 type TCheckRecipientReturn = {
   recipient: TUser | undefined
@@ -65,7 +67,7 @@ export const getPotentialRecipients = createAsyncThunk<
       id: reqData.user_id,
     }
   } catch (e) {
-    return rejectWithValue(e.response.data.detail)
+    return rejectWithValue(getErrorDetail(e))
   }
 })
 
@@ -80,6 +82,21 @@ export const selectRecipient = createAsyncThunk<
     })
     return reqData.selected_user_id
   } catch (e) {
-    return rejectWithValue(e.response.data.message)
+    return rejectWithValue(getErrorDetail(e))
+  }
+})
+
+export const setPassword = createAsyncThunk<
+  string,
+  SetPasswordReq,
+  TRejectValueString
+>('account/setPassword', async (reqData, { rejectWithValue }) => {
+  try {
+    await axiosInstance.post('room/set-password', {
+      ...reqData,
+    })
+    return reqData.password
+  } catch (e) {
+    return rejectWithValue(getErrorDetail(e))
   }
 })

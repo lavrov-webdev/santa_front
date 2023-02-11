@@ -46,6 +46,9 @@ export const account = createSlice({
       state.errorMessage = undefined
       state.recipient = state.potentialRecipients.find((r) => r.id === payload)
     })
+    builder.addCase(api.setPassword.fulfilled, (state, { payload }) => {
+      state.password = payload
+    })
     builder.addMatcher(isPendingAction('account'), (state) => {
       state.isLoading = true
       state.errorMessage = undefined

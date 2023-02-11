@@ -1,5 +1,5 @@
-import { FC, useEffect, useMemo, useState } from 'react'
-import { Button, SelectPicker } from 'rsuite'
+import { FC, useEffect } from 'react'
+import { Button } from 'rsuite'
 import { useParams } from 'react-router-dom'
 import {
   getRoomInfo,
@@ -7,65 +7,75 @@ import {
   useAppSelector,
   useLogin,
 } from '../../store'
-import { Loader } from '../../components'
+import { ErrorMessage, Loader } from '../../components'
 import styles from './styles.module.scss'
+import { FormProvider, useForm, useWatch } from 'react-hook-form'
+import { TLoginForm } from './types'
+import PasswordField from './PasswordField'
+import SelectUser from './SelectUser'
 
 const Login: FC = () => {
   const { roomId } = useParams()
   const dispatch = useAppDispatch()
   const actualRoom = useAppSelector((state) => state.actualRoom)
   const account = useAppSelector((state) => state.account)
+  const form = useForm<TLoginForm>({
+    defaultValues: {
+      userId: null,
+      password: '',
+    },
+  })
   const login = useLogin()
-
-  const [selectedUser, setSelectedUser] = useState<number | null>(null)
-
-  const preparedUsersToLogin = useMemo(
-    () =>
-      actualRoom.usersToLogin.map((u) => ({
-        label: u.name,
-        value: u.id,
-      })),
-    [actualRoom.usersToLogin]
-  )
+  useWatch({ control: form.control, name: 'userId' })
 
   useEffect(() => {
     dispatch(getRoomInfo(roomId || ''))
   }, [])
 
-  const onLogin = async () => {
-    await login(selectedUser, roomId)
+  const isUserHasPassword = !!actualRoom.usersToLogin.find(
+    (u) => u.id === form.getValues('userId')
+  )?.has_password
+
+  const onLogin = async (data: TLoginForm) => {
+    await login(data.userId, isUserHasPassword, data.password, roomId)
   }
 
   const renderContent = () => {
-    if (actualRoom.isLoading || account.isLoading) return <Loader />
-    if (actualRoom.errorMessage) {
-      return <div className={styles.loginError}>{actualRoom.errorMessage}</div>
-    }
-    if (account.errorMessage)
-      return <div className={styles.loginError}>{account.errorMessage}</div>
+    if (actualRoom.isLoading) return <Loader />
 
     if (actualRoom.usersToLogin && actualRoom.usersToLogin.length > 0) {
       return (
-        <div className={styles.loginWrapper}>
-          <div className={styles.loginSelectBlock}>
-            <span className={styles.loginSubtitle}>
-              Выберите себя в списке ниже:{' '}
-            </span>
-            <SelectPicker
-              onChange={setSelectedUser}
-              value={selectedUser}
-              data={preparedUsersToLogin}
-              block
+        <form
+          onSubmit={form.handleSubmit(onLogin)}
+          className={styles.loginWrapper}
+        >
+          <FormProvider {...form}>
+            <div className={styles.loginSelectBlock}>
+              <span className={styles.loginSubtitle}>
+                Выберите себя в списке ниже:
+              </span>
+              <SelectUser />
+              <PasswordField isUserHasPassword={isUserHasPassword} />
+              <Button
+                className={styles.loginSelectBlockButton}
+                type="submit"
+                disabled={!form.formState.isValid}
+                loading={account.isLoading}
+                block
+              >
+                Войти
+              </Button>
+            </div>
+            <ErrorMessage
+              style={{ width: '100%' }}
+              message={actualRoom.errorMessage}
             />
-            <Button
-              className={styles.loginSelectBlockButton}
-              block
-              onClick={onLogin}
-            >
-              Войти
-            </Button>
-          </div>
-        </div>
+            <ErrorMessage
+              style={{ width: '100%' }}
+              message={account.errorMessage}
+            />
+          </FormProvider>
+        </form>
       )
     } else {
       return (
