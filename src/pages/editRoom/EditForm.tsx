@@ -108,7 +108,7 @@ const EditForm: FC<TEditRoomProps> = ({ roomId }) => {
         </div>
       </form>
       <ToastContainer
-        theme={'light'}
+        theme="light"
         position="top-center"
         autoClose={5_000}
         transition={Slide}
