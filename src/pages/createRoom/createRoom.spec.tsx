@@ -4,11 +4,16 @@ import { setupServer } from 'msw/node'
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest'
 import { renderWithProviders } from '../../../test/utils'
 import { CreateRoom } from './index'
-import { cleanup, fireEvent, getAllByText } from '@testing-library/react'
+import {
+  cleanup,
+  fireEvent,
+  getAllByText,
+  getByTestId,
+} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 export const handlers = [
-  rest.get('/api/room/create', (req, res, ctx) => {
+  rest.post('http://localhost:3000/api/room/create', (req, res, ctx) => {
     const result = {
       room_id: 'test_room_id',
       room_root_password: 'test_room_password',
@@ -63,5 +68,16 @@ describe('create room page', async () => {
     await userEvent.click(submitButton)
     expect(queryByText(/Имена не могут быть одинаковыми/i)).toBeNull()
     expect(getAllByText(/Имя не может быть пустым/i).length).toBe(1)
+  })
+
+  test('create room/success', async () => {
+    const wrapper = renderWithProviders(<CreateRoom />)
+    for (let i = 0; i < 3; i++) {
+      const input = wrapper.getByTestId(`users.${i}.name`)
+      await userEvent.type(input, i.toString())
+    }
+    const submitButton = wrapper.getByText(/Создать комнату/i)
+    await userEvent.click(submitButton)
+    await wrapper.findByText(/Комната создана!/i)
   })
 })
