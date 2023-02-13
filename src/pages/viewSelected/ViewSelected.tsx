@@ -11,7 +11,7 @@ const ViewSelected: FC = () => {
       <h4>
         {!recipient
           ? 'Вы пока никого не выбрали'
-          : `Вы уже выбрали пользователя ${recipient.name}`}
+          : `Вы выбрали пользователя ${recipient.name}`}
       </h4>
       {cost && <h5>Максимальная сумма подарка - {cost}₽</h5>}
     </div>
