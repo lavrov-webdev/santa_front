@@ -21,3 +21,6 @@ export const renderWithProviders = (
 
   return { store, ...render(ui, { wrapper: Wrapper, ...renderOption }) }
 }
+
+export const getUrlToTest = (url: string) =>
+  `${window.location.protocol}//${window.location.host}/${url}`

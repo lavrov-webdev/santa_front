@@ -1,19 +1,13 @@
-import React from 'react'
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest'
-import { renderWithProviders } from '../../../test/utils'
+import { getUrlToTest, renderWithProviders } from '../../../test/utils'
 import { CreateRoom } from './index'
-import {
-  cleanup,
-  fireEvent,
-  getAllByText,
-  getByTestId,
-} from '@testing-library/react'
+import { cleanup, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 export const handlers = [
-  rest.post('http://localhost:3000/api/room/create', (req, res, ctx) => {
+  rest.post(getUrlToTest('api/room/create'), (_, res, ctx) => {
     const result = {
       room_id: 'test_room_id',
       room_root_password: 'test_room_password',
