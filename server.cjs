@@ -1,22 +1,15 @@
-const express = require('express')
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path')
-const proxy = require('http-proxy-middleware')
-
+const express = require('express')
+const PORT = process.env.CLIENT_PORT || 3100
 const app = express()
-const port = 3100
-app.use(express.static(__dirname + '/dist'))
 
-const apiProxy = proxy.createProxyMiddleware('/api', {
-  target: 'http://localhost:8080',
-  changeOrigin: true,
-  pathRewrite: { '^/api': '' },
-})
-app.use('/api', apiProxy)
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '/dist/index.html'))
+app.use(express.static(path.resolve(__dirname, './dist')))
+app.get('*', (_, res) => {
+  res.sendFile(path.resolve(__dirname, './dist', 'index.html'))
 })
 
-app.listen(port, () => {
-  console.log(`Server listen port ${port}`)
+app.listen(PORT, () => {
+  console.log(`Server listening on ${PORT}`)
 })
