@@ -34,7 +34,15 @@ const SuccessModal: FC<SuccessModalProps> = ({ open, handleClose }) => {
             Максимальная сумма подарка в этом розыгрыше: <b>{roomCost} ₽</b>
           </p>
         )}
+        <a
+          href="https://lavrov.space/donations"
+          target="_blank"
+          style={{ color: 'inherit' }}
+        >
+          Сказать спасибо автору
+        </a>
       </Modal.Body>
+
       <Modal.Footer>
         <Button onClick={closeModal} appearance="primary">
           Ok

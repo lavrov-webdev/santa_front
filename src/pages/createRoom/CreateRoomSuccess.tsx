@@ -76,6 +76,13 @@ const CreateRoomSuccess: FC<CreateRoomSuccessProps> = () => {
           <b>{store.adminPassword}</b>
         </div>
       </Message>
+      <a
+        className={styles.successThank}
+        href="https://lavrov.space/donations"
+        target="_blank"
+      >
+        Сказать спасибо автору
+      </a>
       <Button
         className={styles.successBackButton}
         appearance="ghost"
