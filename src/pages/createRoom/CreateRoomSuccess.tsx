@@ -73,7 +73,9 @@ const CreateRoomSuccess: FC<CreateRoomSuccessProps> = () => {
       <Message className={styles.successPasswordBlock} type="info">
         <div className={styles.successPasswordBlockText}>
           Запомните этот пароль, он понадобится, чтобы редактировать комнату:{' '}
-          <b>{store.adminPassword}</b>
+          <b className={styles.successPasswordBlockPassword}>
+            {store.adminPassword}
+          </b>
         </div>
       </Message>
       <a

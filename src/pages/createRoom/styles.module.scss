@@ -47,6 +47,9 @@
     &Text {
       font-size: 1.3rem;
     }
+    &Password {
+      word-break: break-all;
+    }
   }
 
   &BackButton {
