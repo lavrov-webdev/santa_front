@@ -10,7 +10,8 @@ import {
   Title,
   UsersFieldsArray,
 } from '../../components'
-import { Button } from 'rsuite'
+import { Button, Stack, Tooltip, Whisper } from 'rsuite'
+import InfoOutlineIcon from '@rsuite/icons/InfoOutline'
 
 const CreateRoomForm: FC = () => {
   const dispatch = useAppDispatch()
@@ -40,7 +41,22 @@ const CreateRoomForm: FC = () => {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-      <Title>Введите список участников:</Title>
+      <Stack spacing={8}>
+        <Title>Введите список участников:</Title>
+        <Whisper
+          placement="top"
+          controlId="control-id-hover"
+          trigger="hover"
+          speaker={
+            <Tooltip>
+              Любой уникальный идентификатор. Имя, полное ФИО, никнейм или что
+              угодно
+            </Tooltip>
+          }
+        >
+          <InfoOutlineIcon />
+        </Whisper>
+      </Stack>
       <UsersFieldsArray
         name="users"
         control={control}

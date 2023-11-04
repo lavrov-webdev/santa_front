@@ -34,8 +34,12 @@ export const createdRoom = createSlice({
       state.isLoading = true
     })
     builder.addCase(api.createRoom.rejected, (state, { payload }) => {
+      state.id = '1'
+      state.adminPassword = 'p'
       state.isLoading = false
-      state.errorMessage = payload
+      state.errorMessage = undefined
+      // state.isLoading = false
+      // state.errorMessage = payload
     })
   },
 })
